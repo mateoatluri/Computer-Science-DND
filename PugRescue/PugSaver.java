@@ -4,7 +4,7 @@ import java.util.Objects;
 public class PugSaver {
 
 	//Moves every dog whose breed is "Pug" in the list to the back of the list
-	public static void rescuePugs(ArrayList<Dog> list) {
+	public static void rescuePugs(MyArrayList<Dog> list) {
 		int goldenCounter = 0;
 
 		for (int i = 0; i < list.size(); i++) {
@@ -13,11 +13,12 @@ public class PugSaver {
 				Dog temp = list.get(i);
 
 
-				for (int j = list.size() - goldenCounter; j > 0; j--) {
+				for (int j = list.size() - (goldenCounter + 1); j > 0; j--) {
 					if (i > j) {
 						break;
 					}
-					if (!(breed.toLowerCase().contains("golden"))) {
+					String newBreed = list.get(j).getBreed();
+					if (!(newBreed.toLowerCase().contains("golden"))) {
 						list.set(i, list.get(j));
 						list.set(j, temp);
 						goldenCounter++;
