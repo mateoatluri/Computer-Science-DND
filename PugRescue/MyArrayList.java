@@ -28,7 +28,17 @@ public class MyArrayList<E> {
 
 	/* Return the number of active slots in the array list */
 	public int size() {
-		return internalArray.length;
+		if (internalArray== null) {
+			throw new NullPointerException();
+		}
+		
+		int counter = 0;
+		for (int i = 0; i < internalArray.length; i++) {
+			if (internalArray[i] != null) {
+				counter++;
+			}
+		}
+		return counter;
 	}
 
 	/* Are there zero objects in the array list? */
@@ -80,18 +90,14 @@ public class MyArrayList<E> {
 	/* Insert an object at index */
 	@SuppressWarnings("unchecked")
 	public void add(int index, E obj) {
-		/* ---- YOUR CODE HERE ---- */
+		//E [] newList = new E [this.size() * 2];
+ 
 	}
 
 	/* Add an object to the end of the list; returns true */
 	@SuppressWarnings("unchecked")
 	public boolean add(E obj) {
-		int counter = 0;
-		for (int i = 0; i < internalArray.length; i++) {
-			if (internalArray[i] != null) {
-				counter++;
-			}
-		}
+		
 	}
 
 	/* Remove the object at index and shift.  Returns removed object. */
