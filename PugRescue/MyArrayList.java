@@ -90,14 +90,38 @@ public class MyArrayList<E> {
 	/* Insert an object at index */
 	@SuppressWarnings("unchecked")
 	public void add(int index, E obj) {
-		//E [] newList = new E [this.size() * 2];
- 
+		if (index < 0 || index > internalArray.length) {
+			throw new IllegalArgumentException();
+		}
+		
+		if (this.size() == internalArray.length) {
+			
+			E[] newList = (E[]) new Object[internalArray.length * 2];
+			for (int i = 0; i < internalArray.length + 1; i++) {
+				if (i < index) {
+					newList[i] = internalArray[i];
+				}
+				if (i == index) {
+					newList[i] = obj;
+				} if (i > index) {
+					newList[i] = internalArray[i - 1];
+				}
+	
+			}		
+			internalArray = newList;
+		} else {
+			for (int i = this.size() - 1; i >= index; i--) {
+				internalArray[i + 1] = internalArray[i];
+			}
+			internalArray[index] = obj;
+		}
 	}
 
 	/* Add an object to the end of the list; returns true */
 	@SuppressWarnings("unchecked")
 	public boolean add(E obj) {
-		
+		//E[] newList = (E[]) new Object[internalArray.length * 2];
+
 	}
 
 	/* Remove the object at index and shift.  Returns removed object. */
