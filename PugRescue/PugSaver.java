@@ -14,7 +14,7 @@ public class PugSaver {
 
 
 				for (int j = list.size() - (goldenCounter + 1); j > 0; j--) {
-					if (i > j) {
+					if (i >= j) {
 						break;
 					}
 					String newBreed = list.get(j).getBreed();

@@ -28,37 +28,25 @@ public class MyArrayList<E> {
 
 	/* Return the number of active slots in the array list */
 	public int size() {
-		if (internalArray== null) {
+		if (internalArray == null) {
 			throw new NullPointerException();
 		}
-		
-		int counter = 0;
-		for (int i = 0; i < internalArray.length; i++) {
-			if (internalArray[i] != null) {
-				counter++;
-			}
-		}
-		return counter;
+
+		return objectCount;
 	}
 
 	/* Are there zero objects in the array list? */
 	public boolean isEmpty() {
-		int counter = 0;
-		for (int i = 0; i < internalArray.length; i++) {
-			if (internalArray[i] != null) {
-				counter++;
-			}
-		}
-		
-		if (counter == 0) {
+		if (objectCount == 0) {
+			return false;
+		} else {
 			return true;
 		}
-		return false;
 	}
 
 	/* Get the index-th object in the list. */
 	public E get(int index) {
-		if (index < 0 || index > internalArray.length) {
+		if (index < 0 || index >= objectCount) {
 			throw new IllegalArgumentException();
 		}
 		
@@ -67,7 +55,7 @@ public class MyArrayList<E> {
 
 	/* Replace the object at index with obj.  returns object that was replaced. */
 	public E set(int index, E obj) {
-		if (index < 0 || index > internalArray.length) {
+		if (index < 0 || index >= objectCount) {
 			throw new IllegalArgumentException();
 		}
 		E old = internalArray[index];
@@ -79,7 +67,7 @@ public class MyArrayList<E> {
 	/* Returns true if this list contains an element equal to obj;
 	 otherwise returns false. */
 	public boolean contains(E obj) {
-		for (int i = 0; i < internalArray.length; i++) {
+		for (int i = 0; i < objectCount; i++) {
 			if (internalArray[i].equals(obj)) {
 				return true;
 			}
@@ -90,43 +78,57 @@ public class MyArrayList<E> {
 	/* Insert an object at index */
 	@SuppressWarnings("unchecked")
 	public void add(int index, E obj) {
-		if (index < 0 || index > internalArray.length) {
+		if (index < 0 || index > objectCount) {
 			throw new IllegalArgumentException();
 		}
 		
-		if (this.size() == internalArray.length) {
+		if (objectCount == internalArray.length) {
 			
 			E[] newList = (E[]) new Object[internalArray.length * 2];
 			for (int i = 0; i < internalArray.length + 1; i++) {
 				if (i < index) {
 					newList[i] = internalArray[i];
-				}
-				if (i == index) {
+				} else if (i == index) {
 					newList[i] = obj;
-				} if (i > index) {
+				} else if (i > index) {
 					newList[i] = internalArray[i - 1];
 				}
 	
 			}		
 			internalArray = newList;
 		} else {
-			for (int i = this.size() - 1; i >= index; i--) {
+			for (int i = objectCount - 1; i >= index; i--) {
 				internalArray[i + 1] = internalArray[i];
 			}
 			internalArray[index] = obj;
 		}
+		objectCount++;
 	}
 
 	/* Add an object to the end of the list; returns true */
 	@SuppressWarnings("unchecked")
 	public boolean add(E obj) {
-		//E[] newList = (E[]) new Object[internalArray.length * 2];
+		this.add(objectCount, obj);
+		return true;
+
 
 	}
 
 	/* Remove the object at index and shift.  Returns removed object. */
 	public E remove(int index) {
-		/* ---- YOUR CODE HERE ---- */
+		if (index < 0 || index >= objectCount) {
+			throw new IllegalArgumentException();
+		}
+		E removed = internalArray[index];
+
+		for (int i = index; i < objectCount - 1; i++) {
+			internalArray[i] = internalArray[i + 1];
+		}
+		internalArray[objectCount] = null;
+		objectCount--;
+		return removed;
+		
+
 	}
 
 	/* Removes the first occurrence of the specified element from this list, 
@@ -136,7 +138,17 @@ public class MyArrayList<E> {
 	 * Returns true if this list contained the specified element (or equivalently, 
 	 * if this list changed as a result of the call). */
 	public boolean remove(E obj) {
-		/* ---- YOUR CODE HERE ---- */
+		if (!this.contains(obj)) {
+			return false;
+		}
+
+		for (int i = 0; i < internalArray.length; i++) {
+			if (internalArray[i] == obj) {
+				this.remove(i);
+				return true;
+			}
+		}
+		return false;
 	}
 
 
@@ -144,7 +156,30 @@ public class MyArrayList<E> {
 	 * If the array is empty, it should return "[]".  If there is one element, "[X]", etc.
 	 * Elements are separated by a comma and a space. */
 	public String toString() {
-		/* ---- YOUR CODE HERE ---- */
+		if (internalArray == null) {
+			throw new NullPointerException();
+		}
+		
+		if (this.size() == 0) {
+			return "[]";
+		}
+		String newString = "[";
+		for (int i = 0; i < objectCount - 1; i++) {
+			if (internalArray[i] == null) {
+				newString += "null, ";
+			} else {
+				newString += internalArray[i].toString() + ", ";
+			}
+			
+		}
+
+		if (internalArray[objectCount - 1] == null) {
+			newString += "null]";
+		} else {
+			newString += internalArray[objectCount - 1] + "]";
+		}
+
+		return newString;
 	}
 
 }
