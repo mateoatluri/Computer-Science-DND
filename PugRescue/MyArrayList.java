@@ -27,6 +27,7 @@ public class MyArrayList<E> {
 	}
 
 	/* Return the number of active slots in the array list */
+	// should be O(1)
 	public int size() {
 		if (internalArray == null) {
 			throw new NullPointerException();
@@ -36,6 +37,7 @@ public class MyArrayList<E> {
 	}
 
 	/* Are there zero objects in the array list? */
+	// should be O(1)
 	public boolean isEmpty() {
 		if (objectCount == 0) {
 			return false;
@@ -45,6 +47,7 @@ public class MyArrayList<E> {
 	}
 
 	/* Get the index-th object in the list. */
+	// should be 0(1)
 	public E get(int index) {
 		if (index < 0 || index >= objectCount) {
 			throw new IllegalArgumentException();
@@ -54,6 +57,7 @@ public class MyArrayList<E> {
 	}
 
 	/* Replace the object at index with obj.  returns object that was replaced. */
+	// should be 0(1)
 	public E set(int index, E obj) {
 		if (index < 0 || index >= objectCount) {
 			throw new IllegalArgumentException();
@@ -66,6 +70,7 @@ public class MyArrayList<E> {
 
 	/* Returns true if this list contains an element equal to obj;
 	 otherwise returns false. */
+	 // should be 0(n)
 	public boolean contains(E obj) {
 		for (int i = 0; i < objectCount; i++) {
 			if (internalArray[i].equals(obj)) {
@@ -76,6 +81,7 @@ public class MyArrayList<E> {
 	}
 
 	/* Insert an object at index */
+	// should be 0(n)
 	@SuppressWarnings("unchecked")
 	public void add(int index, E obj) {
 		if (index < 0 || index > objectCount) {
@@ -106,6 +112,7 @@ public class MyArrayList<E> {
 	}
 
 	/* Add an object to the end of the list; returns true */
+	// should be 0(n)
 	@SuppressWarnings("unchecked")
 	public boolean add(E obj) {
 		this.add(objectCount, obj);
@@ -115,6 +122,7 @@ public class MyArrayList<E> {
 	}
 
 	/* Remove the object at index and shift.  Returns removed object. */
+	// should be 0(n)
 	public E remove(int index) {
 		if (index < 0 || index >= objectCount) {
 			throw new IllegalArgumentException();
@@ -137,7 +145,9 @@ public class MyArrayList<E> {
 	 * (o==null ? get(i)==null : o.equals(get(i))) (if such an element exists). 
 	 * Returns true if this list contained the specified element (or equivalently, 
 	 * if this list changed as a result of the call). */
+	// should be 0(n)
 	public boolean remove(E obj) {
+		
 		if (!this.contains(obj)) {
 			return false;
 		}
@@ -155,6 +165,7 @@ public class MyArrayList<E> {
 	/* For testing; your string should output as "[X, X, X, X, ...]" where X, X, X, X, ... are the elements in the ArrayList.
 	 * If the array is empty, it should return "[]".  If there is one element, "[X]", etc.
 	 * Elements are separated by a comma and a space. */
+	// should be 0(n)
 	public String toString() {
 		if (internalArray == null) {
 			throw new NullPointerException();

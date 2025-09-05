@@ -21,8 +21,12 @@ public class PugSaverTester {
         testList.add(dog5);
         testList.add(dog6);
 
+
         System.out.println(testList);
-        PugSaver.rescuePugs(testList);
+        // PugSaver.rescuePugs(testList);
         System.out.println(testList);
+  
+
+        //System.out.println(testList.get(2));
     }
 }
