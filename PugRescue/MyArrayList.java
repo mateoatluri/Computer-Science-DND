@@ -6,6 +6,8 @@
  * Your indexed functions should throw IndexOutOfBoundsException if index is invalid!
  */
 
+ import java.lang.StringBuilder;
+
 public class MyArrayList<E> {
 
 	/* Internal Object counter */
@@ -40,9 +42,9 @@ public class MyArrayList<E> {
 	// should be O(1)
 	public boolean isEmpty() {
 		if (objectCount == 0) {
-			return false;
-		} else {
 			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -50,7 +52,7 @@ public class MyArrayList<E> {
 	// should be 0(1)
 	public E get(int index) {
 		if (index < 0 || index >= objectCount) {
-			throw new IllegalArgumentException();
+			throw new IndexOutOfBoundsException();
 		}
 		
 		return internalArray[index];
@@ -174,23 +176,24 @@ public class MyArrayList<E> {
 		if (this.size() == 0) {
 			return "[]";
 		}
-		String newString = "[";
+		StringBuilder newString = new StringBuilder();
+		newString.append("[");
+
 		for (int i = 0; i < objectCount - 1; i++) {
 			if (internalArray[i] == null) {
-				newString += "null, ";
+				newString.append("null, ");
 			} else {
-				newString += internalArray[i].toString() + ", ";
+				newString.append(internalArray[i].toString() + ", ");
 			}
-			
 		}
 
 		if (internalArray[objectCount - 1] == null) {
-			newString += "null]";
+			newString.append("null]");
 		} else {
-			newString += internalArray[objectCount - 1] + "]";
+			newString.append(internalArray[objectCount - 1] + "]");
 		}
 
-		return newString;
+		return newString.toString();
 	}
 
 }
