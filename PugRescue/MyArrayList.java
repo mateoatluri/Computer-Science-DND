@@ -74,39 +74,25 @@ public class MyArrayList<E> {
 	 otherwise returns false. */
 	 // should be 0(n)
 	public boolean contains(E obj) {
-		for (int i = 0; i < internalArray.length; i++) {
-			if (obj == null) {
+		if (obj == null) {
+
+			for (int i = 0; i < objectCount; i++) {
 				if (internalArray[i] == null) {
 					return true;
-				} else {
-					return false;
 				}
-			} else if (internalArray[i] == null) {
-				return false;
-			}		
-			else if (internalArray[i].equals(obj)) {
-						return true;
 			}
+			return false;
+		} else {
 
-			
+			for (int i = 0; i < objectCount; i++) {
+					if (internalArray[i] != null && internalArray[i].equals(obj)) {
+						return true;
+					}
+				}
+			return false;
+			}
 		}
-		return false;
 
-	}
-		
-		// for (int i = 0; i < objectCount; i++) {
-			
-		// 	if (internalArray[i] == null) {
-		// 		if (obj == null) {
-		// 			return true;
-		// 		} else {
-		// 			return false;
-		// 		}
-		// 	} else if (internalArray[i].equals(obj)) {
-		// 		return true;
-		// 	}
-		// }
-		// return false;
 	
 
 	/* Insert an object at index */
@@ -120,7 +106,7 @@ public class MyArrayList<E> {
 		if (objectCount == internalArray.length) {
 			
 			E[] newList = (E[]) new Object[internalArray.length * 2];
-			for (int i = 0; i < internalArray.length + 1; i++) {
+			for (int i = 0; i < objectCount + 1; i++) {
 				if (i < index) {
 					newList[i] = internalArray[i];
 				} else if (i == index) {
@@ -151,18 +137,19 @@ public class MyArrayList<E> {
 	}
 
 	/* Remove the object at index and shift.  Returns removed object. */
-	// should be 0(n)
+	// should be 0(n) a b c d e f
 	public E remove(int index) {
 		if (index < 0 || index >= objectCount) {
-			throw new IllegalArgumentException();
+			throw new IndexOutOfBoundsException();
 		}
 		E removed = internalArray[index];
 
 		for (int i = index; i < objectCount - 1; i++) {
 			internalArray[i] = internalArray[i + 1];
 		}
+		objectCount--; // objCount first cuz otherwise the last value is duplicated
 		internalArray[objectCount] = null;
-		objectCount--;
+		 
 		return removed;
 		
 
@@ -182,7 +169,7 @@ public class MyArrayList<E> {
 		}
 
 		for (int i = 0; i < internalArray.length; i++) {
-			if (internalArray[i] == obj) {
+			if ((obj != null && internalArray[i].equals(obj)) || (obj == null && internalArray[i] == null)) {
 				this.remove(i);
 				return true;
 			}
