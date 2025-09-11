@@ -18,6 +18,8 @@ public class MyArrayListTester {
         myList.add("Mateo");
         myList.add(null);
         myList.add("Shiv");
+        myList.add("hi");
+        System.out.println(myList.contains(null));
         System.out.println(myList.toString());
 
     }

@@ -31,9 +31,6 @@ public class MyArrayList<E> {
 	/* Return the number of active slots in the array list */
 	// should be O(1)
 	public int size() {
-		if (internalArray == null) {
-			throw new NullPointerException();
-		}
 
 		return objectCount;
 	}
@@ -41,6 +38,8 @@ public class MyArrayList<E> {
 	/* Are there zero objects in the array list? */
 	// should be O(1)
 	public boolean isEmpty() {
+
+		
 		if (objectCount == 0) {
 			return true;
 		} else {
@@ -62,8 +61,9 @@ public class MyArrayList<E> {
 	// should be 0(1)
 	public E set(int index, E obj) {
 		if (index < 0 || index >= objectCount) {
-			throw new IllegalArgumentException();
+			throw new IndexOutOfBoundsException();
 		}
+
 		E old = internalArray[index];
 		internalArray[index] = obj;
 		return old;
@@ -74,20 +74,47 @@ public class MyArrayList<E> {
 	 otherwise returns false. */
 	 // should be 0(n)
 	public boolean contains(E obj) {
-		for (int i = 0; i < objectCount; i++) {
-			if (internalArray[i].equals(obj)) {
-				return true;
+		for (int i = 0; i < internalArray.length; i++) {
+			if (obj == null) {
+				if (internalArray[i] == null) {
+					return true;
+				} else {
+					return false;
+				}
+			} else if (internalArray[i] == null) {
+				return false;
+			}		
+			else if (internalArray[i].equals(obj)) {
+						return true;
 			}
+
+			
 		}
 		return false;
+
 	}
+		
+		// for (int i = 0; i < objectCount; i++) {
+			
+		// 	if (internalArray[i] == null) {
+		// 		if (obj == null) {
+		// 			return true;
+		// 		} else {
+		// 			return false;
+		// 		}
+		// 	} else if (internalArray[i].equals(obj)) {
+		// 		return true;
+		// 	}
+		// }
+		// return false;
+	
 
 	/* Insert an object at index */
 	// should be 0(n)
 	@SuppressWarnings("unchecked")
 	public void add(int index, E obj) {
 		if (index < 0 || index > objectCount) {
-			throw new IllegalArgumentException();
+			throw new IndexOutOfBoundsException();
 		}
 		
 		if (objectCount == internalArray.length) {
