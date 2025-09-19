@@ -15,11 +15,19 @@ private E value;
     next = nx;
   }
 
-  public E getValue() { return value; }
-  public ListNode<E> getNext() { return next; }
+    public E getValue() { 
+      return value;
+    }
+    public ListNode<E> getNext() { 
+      return next; 
+    }
 
-  public void setValue(E v) { value = v; }
-  public void setNext(ListNode<E> nx) { next = nx; }
+    public void setValue(E v) { 
+      value = v; 
+    }
+    public void setNext(ListNode<E> nx) { 
+      next = nx; 
+    }
 }
 
 
