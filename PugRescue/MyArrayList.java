@@ -127,7 +127,7 @@ public class MyArrayList<E> {
 	}
 
 	/* Add an object to the end of the list; returns true */
-	// should be 0(n)
+	// should be 0(1)
 	@SuppressWarnings("unchecked")
 	public boolean add(E obj) {
 		this.add(objectCount, obj);
