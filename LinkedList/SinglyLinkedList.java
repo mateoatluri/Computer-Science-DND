@@ -214,7 +214,7 @@ public class SinglyLinkedList<E> {
 			newNode.setNext(next);
 		}
 
-
+		nodeCount++;
 	}
 
 	// Removes the i-th element and returns its value.
@@ -226,8 +226,24 @@ public class SinglyLinkedList<E> {
 		}
 
 		if (i == 0) {
-			
+			ListNode<E> removed = this.getNode(i);
+			this.head = this.getNode(i + 1);
+			return removed.getValue();
 		}
+
+		if (i == nodeCount - 1) {
+			ListNode<E> removed = this.getNode(i);
+			tail = this.getNode(i - 1);
+			tail.setNext(null);
+			return removed.getValue();
+		}
+			ListNode<E> previous = this.getNode(i - 1);
+			ListNode<E> removed = this.getNode(i);
+			ListNode<E> next = this.getNode(i + 1);
+			previous.setNext(next);
+
+			return removed.getValue();
+
 	}
 
 	// Returns a string representation of this list exactly like that for MyArrayList.
