@@ -155,6 +155,19 @@ public class SinglyLinkedList<E> {
 		return node.getValue();
 	}
 
+	public ListNode<E> getNode(int i) {
+		if (i < 0 || i >= nodeCount) {
+			throw new IndexOutOfBoundsException();
+		}
+		
+
+		ListNode<E> node = head;
+		for (int counter = 0; counter <= i; counter++) {
+			node = node.getNext();
+		}
+		return node;
+	}
+
 	// Replaces the i-th element with obj and returns the old value.
 	// FOR SET YOU CAN CALL GET
 	@SuppressWarnings("unchecked")
@@ -178,14 +191,43 @@ public class SinglyLinkedList<E> {
 	// Inserts obj to become the i-th element. Increments the size
 	// of the list by one.
 	// get the previous, set that previous's next to the new node, then set the new node's next to what the previous node's next was
+	@SuppressWarnings("unchecked")
 	public void add(int i, Object obj) {
+		if (i < 0 || i >= nodeCount) {
+			throw new IndexOutOfBoundsException();
+		}
+		ListNode<E> newNode = new ListNode<E>((E) obj);
+		if (i == 0) {
+			newNode.setNext(head);
+			head = newNode;
+		}
+
+		else if (i == nodeCount - 1) {
+			tail.setNext(newNode);
+			tail = newNode;
+		}
+
+		else {
+			ListNode<E> previous = this.getNode(i - 1);
+			ListNode<E> next = this.getNode(i);
+			previous.setNext(newNode);
+			newNode.setNext(next);
+		}
+
+
 	}
 
 	// Removes the i-th element and returns its value.
 	// Decrements the size of the list by one.
 	// get the index before and set the next to .next.next
 	public E remove(int i) {
-		
+		if (i < 0 || i >= nodeCount) {
+			throw new IndexOutOfBoundsException();
+		}
+
+		if (i == 0) {
+			
+		}
 	}
 
 	// Returns a string representation of this list exactly like that for MyArrayList.
