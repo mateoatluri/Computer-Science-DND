@@ -20,31 +20,31 @@ public class SinglyLinkedList<E> {
 	public SinglyLinkedList(Object[] values) {
 		if (values.length == 0) {
 			head = null;
-		tail = null;
-		nodeCount = 0;
-		}
-		else if (values.length == 1) {
+			tail = null;
+			nodeCount = 0;
+		
+		} else if (values.length == 1) {
 			ListNode<E> newNode = new ListNode<E>((E) values[0]);
 			nodeCount = 1;
 			head = newNode;
 			tail = newNode;
+		
 		} else {
 			
 			// head.setValue((E) values[0]);
 			// tail.setValue((E) values[values.length - 1]); // maybe set equal to 0?
-			int counter = 0;
 			ListNode<E> headNode = new ListNode<E>((E) values[0]);
 			head = headNode;
-			ListNode<E> tailNode = new ListNode<E>((E) values[values.length - 1]);
-			tail = tailNode;
-			//ListNode<E> nextNode = new ListNode<E>((E) values[1], head.getNext());
-			for (ListNode<E> i = head; head != tail; i = i.getNext()) {
+			nodeCount = 1;
+			ListNode<E> currentNode = head;
 
-				ListNode<E> nextNode = new ListNode<E>((E) values[counter + 1]);
-				i.setNext(nextNode);
-				counter++;
+			for (int i = 0; i < values.length - 1; i++) {
+				ListNode<E> nextNode = new ListNode<E>((E) values[i + 1]);
+				currentNode.setNext(nextNode);
+				currentNode = nextNode;
 				nodeCount++;
 			}
+			tail = currentNode;
 		}
 		
 
@@ -75,7 +75,7 @@ public class SinglyLinkedList<E> {
 	// Returns true if this list contains an element equal to obj;
 	// otherwise returns false.
 	public boolean contains(E obj) {
-		for (ListNode<E> i = head; i != tail; i = i.getNext()) {
+		for (ListNode<E> i = head; i != null; i = i.getNext()) {
 			if (i.getValue().equals(obj)) {
 				return true;
 			}
@@ -105,11 +105,15 @@ public class SinglyLinkedList<E> {
 		if (nodeCount == 0) {
 			this.head = newNode;
 			this.tail = newNode;
+			nodeCount = 1;
+			return true;
 		} else {
 			tail.setNext(newNode);
 			this.tail = newNode;
+			nodeCount++;
+			return true;
 		}
-		return false;
+
 	}
 
 	// Removes the first element that is equal to obj, if any.
@@ -123,7 +127,6 @@ public class SinglyLinkedList<E> {
 		}
 		
 		for (ListNode<E> i = head; counter < nodeCount - 1; i = i.getNext()) {
-			counter++;
 			if (i.getNext().getValue().equals(obj)) {
 				if (i.getNext() == tail) {
 					i.setNext(null);
@@ -149,7 +152,7 @@ public class SinglyLinkedList<E> {
 		
 
 		ListNode<E> node = head;
-		for (int counter = 0; counter <= i; counter++) {
+		for (int counter = 0; counter < i; counter++) {
 			node = node.getNext();
 		}
 		return node.getValue();
@@ -162,7 +165,7 @@ public class SinglyLinkedList<E> {
 		
 
 		ListNode<E> node = head;
-		for (int counter = 0; counter <= i; counter++) {
+		for (int counter = 0; counter < i; counter++) {
 			node = node.getNext();
 		}
 		return node;
@@ -180,9 +183,10 @@ public class SinglyLinkedList<E> {
 		for (ListNode<E> currentNode = head; counter <= i; currentNode = currentNode.getNext()) {
 			if (counter == i) {
 				E oldValue = currentNode.getValue();
-				currentNode.getValue().equals(obj);
+				currentNode.setValue((E) obj);
 				return oldValue;
 			}
+			counter++;
 		}
 		return (E) "If this returns, this method is wrong";
 
@@ -193,7 +197,7 @@ public class SinglyLinkedList<E> {
 	// get the previous, set that previous's next to the new node, then set the new node's next to what the previous node's next was
 	@SuppressWarnings("unchecked")
 	public void add(int i, Object obj) {
-		if (i < 0 || i >= nodeCount) {
+		if (i < 0 || i > nodeCount) {
 			throw new IndexOutOfBoundsException();
 		}
 		ListNode<E> newNode = new ListNode<E>((E) obj);
@@ -202,7 +206,7 @@ public class SinglyLinkedList<E> {
 			head = newNode;
 		}
 
-		else if (i == nodeCount - 1) {
+		else if (i == nodeCount) {
 			tail.setNext(newNode);
 			tail = newNode;
 		}
@@ -225,43 +229,51 @@ public class SinglyLinkedList<E> {
 			throw new IndexOutOfBoundsException();
 		}
 
+		ListNode<E> removed;
+
 		if (i == 0) {
-			ListNode<E> removed = this.getNode(i);
-			this.head = this.getNode(i + 1);
-			return removed.getValue();
+			removed = head;
+			head = head.getNext();
+			//return removed.getValue();
+		}
+		else if (i == nodeCount - 1) {
+			removed = tail;
+			ListNode<E> previous = getNode(i - 1);
+			previous.setNext(null);
+			tail = previous;
+
+		} else {
+			removed = getNode(i);
+			ListNode<E> previous = getNode(i - 1);
+			previous.setNext(previous.getNext().getNext());
 		}
 
-		if (i == nodeCount - 1) {
-			ListNode<E> removed = this.getNode(i);
-			tail = this.getNode(i - 1);
-			tail.setNext(null);
+			nodeCount--;
 			return removed.getValue();
-		}
-			ListNode<E> previous = this.getNode(i - 1);
-			ListNode<E> removed = this.getNode(i);
-			ListNode<E> next = this.getNode(i + 1);
-			previous.setNext(next);
-
-			return removed.getValue();
-
 	}
 
 	// Returns a string representation of this list exactly like that for MyArrayList.
 	public String toString() {
+		if (this.size() == 0) {
+			return "";
+		}
+		
 		int counter = 0;
 
 		StringBuilder newString = new StringBuilder();
 		newString.append("[");
 
+
 		for (ListNode<E> currentNode = head; counter < nodeCount - 1; currentNode = currentNode.getNext()) {
-			if (currentNode.getValue() == null) {
+			if (currentNode == null || currentNode.getValue() == null) {
 				newString.append("null, ");
 			} else {
 				newString.append(currentNode.getValue().toString() + ", ");
 			}
+			counter++;
 		}
 		
-		if (tail.getValue() == null) {
+		if (tail == null || tail.getValue() == null) {
 			newString.append("null]");
 		} else {
 			newString.append(tail.getValue().toString() + "]");
