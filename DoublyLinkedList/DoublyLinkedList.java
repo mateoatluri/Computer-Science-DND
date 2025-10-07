@@ -35,9 +35,9 @@ public class DoublyLinkedList {
 	// Returns true if this list is empty; otherwise returns false.
 	public boolean isEmpty() {
 		if (nodeCount > 0) {
-			return true;
-		} else {
 			return false;
+		} else {
+			return true;
 		}
 	}
 
@@ -127,7 +127,7 @@ public class DoublyLinkedList {
 		}
 
 		ListNode2<Nucleotide> currentNode = SENTINEL.getNext();
-		for (int j = 0; j <= i; j++) {
+		for (int j = 0; j < i; j++) {
 			currentNode = currentNode.getNext();
 		}
 
@@ -141,7 +141,7 @@ public class DoublyLinkedList {
 		}
 
 		ListNode2<Nucleotide> currentNode = SENTINEL.getNext();
-		for (int j = 0; j <= i; j++) {
+		for (int j = 0; j < i; j++) {
 			currentNode = currentNode.getNext();
 		}
 
@@ -282,16 +282,20 @@ public class DoublyLinkedList {
 	// Like question 9 on the SinglyLinkedList test:
 	// You are to find and delete the first instance of seg in the list.
 	// If seg is not in the list, return false, otherwise return true.
-	public boolean deleteSegment(DoublyLinkedList seg) {
+	
+	
+	// public boolean deleteSegment(DoublyLinkedList seg) {
 		
-	}
+	// }
 	
 	// Like question 10 on the SinglyLinkedList test:
 	// Delete the last three nodes in the list
 	// If there are not enough nodes, return false
-	public boolean deleteLastThree() {
+	
+	
+	// public boolean deleteLastThree() {
 		
-	}
+	// }
 
 	// Like question 11 on the SinglyLinkedList test:
 	// Replaces every node containing "A" with three nodes containing "T" "A" "C"
