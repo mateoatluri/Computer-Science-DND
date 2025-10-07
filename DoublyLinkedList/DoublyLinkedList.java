@@ -16,7 +16,12 @@ public class DoublyLinkedList {
 	// Constructor: creates a list that contains
 	// all elements from the array values, in the same order
 	public DoublyLinkedList(Nucleotide[] values) {
-		//make the add method before i do this
+		SENTINEL.setNext(SENTINEL);
+		SENTINEL.setPrevious(SENTINEL);
+		for (int i = 0; i < values.length; i++) {
+			this.add(values[i]);
+		}
+		nodeCount = values.length;
 	}
 	
 	public ListNode2<Nucleotide> getSentinel() {
@@ -51,9 +56,6 @@ public class DoublyLinkedList {
 	public boolean contains(Nucleotide obj) {
 		if (nodeCount == 0) {
 			return false;
-		}
-		if (obj == null) {
-			throw new NullPointerException();
 		}
 
 		//starts with sentinel.getNext bc we don't wanna start with sentinel
@@ -180,7 +182,13 @@ public class DoublyLinkedList {
 			insertedNode.setPrevious(SENTINEL);
 			SENTINEL.setNext(insertedNode);
 			SENTINEL.setPrevious(insertedNode);
-		} else if (i == nodeCount) {
+		} else if (i == 0) {
+			insertedNode.setNext(SENTINEL.getNext());
+			SENTINEL.getNext().setPrevious(insertedNode);
+			insertedNode.setPrevious(SENTINEL);
+			SENTINEL.setNext(insertedNode);
+		}
+		else if (i == nodeCount) {
 			insertedNode.setPrevious(SENTINEL.getPrevious());
 			SENTINEL.getPrevious().setNext(insertedNode);
 			insertedNode.setNext(SENTINEL);
@@ -258,6 +266,8 @@ public class DoublyLinkedList {
 			SENTINEL.setPrevious(seg.getSentinel().getPrevious());
 		}
 
+		nodeCount = nodeCount + (seg.size());
+
 	}
 	
 	// Like question 8 on the SinglyLinkedList test:
@@ -268,13 +278,14 @@ public class DoublyLinkedList {
 		
 		ListNode2<Nucleotide> nextNode = nodeBefore.getNext();
 		for (int i = 0; i < 16; i++) {
-			if (nextNode.getNext() != SENTINEL) {
+			if (nextNode != SENTINEL) {
 				nextNode = nextNode.getNext();
 			} else {
 				throw new IllegalArgumentException("Not 16 Nodes to Remove");
 			}
 		}
 
+		nodeCount = nodeCount - 16;
 		nodeBefore.setNext(nextNode);
 		nextNode.setPrevious(nodeBefore);
 	}
@@ -283,24 +294,65 @@ public class DoublyLinkedList {
 	// You are to find and delete the first instance of seg in the list.
 	// If seg is not in the list, return false, otherwise return true.
 	
-	
-	// public boolean deleteSegment(DoublyLinkedList seg) {
-		
-	// }
+	// THIS DOES NOT WORK... FIX
+	public boolean deleteSegment(DoublyLinkedList seg) {
+		int segLength = seg.size();
+		int index = 0;
+		int counter = 0;
+
+		for (ListNode2<Nucleotide> currentNode = SENTINEL.getNext(); currentNode != getNode(nodeCount - segLength); currentNode = currentNode.getNext()) {
+			ListNode2<Nucleotide> segNode = seg.getSentinel().getNext();
+			while (currentNode.getValue().equals(segNode.getValue()) && counter < segLength) {
+				currentNode.getNext();
+				segNode.getNext();
+				counter++;
+			}
+			for (int i = 0; i < counter; i++) {
+				currentNode = currentNode.getPrevious();
+			}
+			if (counter != segLength) {
+				counter = 0;
+			}
+			if (counter == segLength) {
+					currentNode.getPrevious().setNext(getNode(index+counter));
+				nodeCount = nodeCount - segLength;
+				return true;
+			}
+			index++;
+		}
+		return false;
+	}
 	
 	// Like question 10 on the SinglyLinkedList test:
 	// Delete the last three nodes in the list
 	// If there are not enough nodes, return false
 	
 	
-	// public boolean deleteLastThree() {
-		
-	// }
+	public boolean deleteLastThree() {
+		if (nodeCount < 3) {
+			return false;
+		}
+
+		ListNode2<Nucleotide> newLast = SENTINEL.getPrevious().getPrevious().getPrevious().getPrevious();
+		newLast.setNext(SENTINEL);
+		SENTINEL.setPrevious(newLast);
+		nodeCount = nodeCount - 3;
+		return true;
+	}
 
 	// Like question 11 on the SinglyLinkedList test:
 	// Replaces every node containing "A" with three nodes containing "T" "A" "C"
 	public void replaceEveryAWithTAC() {
-		
+		int index = 0;
+		for (ListNode2<Nucleotide> currentNode = SENTINEL.getNext(); currentNode != SENTINEL; currentNode = currentNode.getNext()) {
+			if (currentNode.getValue() == Nucleotide.A) {
+				this.add(index + 1, Nucleotide.C);
+				this.add(index, Nucleotide.T);
+				index = index + 2;
+				nodeCount = nodeCount + 2;
+			}
+			index++;
+		}
 	}
 
 }

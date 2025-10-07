@@ -2,18 +2,20 @@ public class DoublyLinkedListTester {
     
     public static void main(String[] args) {
         DoublyLinkedList myList = new DoublyLinkedList();
+        DoublyLinkedList secondList = new DoublyLinkedList();
 
-        // System.out.println(myList);
-        // System.out.println(myList.isEmpty());
-        // System.out.println(myList.size());
-        // System.out.println(myList.toString());
-
+        
         myList.add(Nucleotide.A);
+        myList.add(Nucleotide.C);
         myList.add(Nucleotide.G);
-        myList.add(Nucleotide.T);
-        //myList.add(Nucleotide.C);
-        myList.add(Nucleotide.A);
-        // myList.add(Nucleotide.T);
+
+        secondList.add(Nucleotide.A);
+        secondList.add(Nucleotide.C);
+        secondList.add(Nucleotide.G);
+
+
+
+
 
         // System.out.println(myList.isEmpty());
         // System.out.println(myList.size());
@@ -25,8 +27,28 @@ public class DoublyLinkedListTester {
         // myList.remove(Nucleotide.T);
         // System.out.println(myList.toString());
 
+        // System.out.println(myList.toString());
+        // myList.add(4, Nucleotide.C);
+        // System.out.println(myList.toString());
+
+        // System.out.println(myList.toString());
+        // System.out.println();
+        // System.out.println(secondList.toString());
+
+        // myList.deleteSegment(secondList);
+        // System.out.println(myList.toString());
+
+        // System.out.println(myList.toString());
+        // System.out.println(myList.size());
+        // myList.deleteLastThree();
+        // System.out.println(myList.toString());
+        // System.out.println(myList.size());
+
         System.out.println(myList.toString());
-        myList.add(0, Nucleotide.C);
+        // myList.removeCCCCCCCCGGGGGGGG(myList.getNode(0));
+        // System.out.println(myList.toString());
+
+        myList.addSegmentToEnd(secondList);
         System.out.println(myList.toString());
 
         
