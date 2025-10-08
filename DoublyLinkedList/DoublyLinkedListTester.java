@@ -4,14 +4,26 @@ public class DoublyLinkedListTester {
         DoublyLinkedList myList = new DoublyLinkedList();
         DoublyLinkedList secondList = new DoublyLinkedList();
 
-        
+        myList.add(Nucleotide.C);
+        myList.add(Nucleotide.C);
         myList.add(Nucleotide.A);
         myList.add(Nucleotide.C);
         myList.add(Nucleotide.G);
+        myList.add(Nucleotide.T);
 
         secondList.add(Nucleotide.A);
         secondList.add(Nucleotide.C);
         secondList.add(Nucleotide.G);
+
+
+        System.out.println(myList.size());
+        System.out.println(myList.toString());
+
+        System.out.println(secondList.toString());
+        myList.deleteSegment(secondList);
+        System.out.println(myList.toString());
+        System.out.println(myList.size());
+
 
 
 
@@ -44,12 +56,12 @@ public class DoublyLinkedListTester {
         // System.out.println(myList.toString());
         // System.out.println(myList.size());
 
-        System.out.println(myList.toString());
-        // myList.removeCCCCCCCCGGGGGGGG(myList.getNode(0));
         // System.out.println(myList.toString());
+        // // myList.removeCCCCCCCCGGGGGGGG(myList.getNode(0));
+        // // System.out.println(myList.toString());
 
-        myList.addSegmentToEnd(secondList);
-        System.out.println(myList.toString());
+        // myList.addSegmentToEnd(secondList);
+        // System.out.println(myList.toString());
 
         
     }

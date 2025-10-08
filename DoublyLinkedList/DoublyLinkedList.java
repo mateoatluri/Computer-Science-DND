@@ -19,6 +19,9 @@ public class DoublyLinkedList {
 		SENTINEL.setNext(SENTINEL);
 		SENTINEL.setPrevious(SENTINEL);
 		for (int i = 0; i < values.length; i++) {
+			if (values[i] == null) {
+				throw new NullPointerException();
+			}
 			this.add(values[i]);
 		}
 		nodeCount = values.length;
@@ -176,6 +179,10 @@ public class DoublyLinkedList {
 			throw new IndexOutOfBoundsException();
 		}
 
+		if (obj == null) {
+			throw new NullPointerException();
+		}
+
 		ListNode2<Nucleotide> insertedNode = new ListNode2<Nucleotide>(obj);
 		if (nodeCount == 0) {
 			insertedNode.setNext(SENTINEL);
@@ -212,7 +219,7 @@ public class DoublyLinkedList {
 		}
 
 		ListNode2<Nucleotide> removedNode = getNode(i);
-		Nucleotide value = get(i);
+		Nucleotide value = removedNode.getValue();
 
 		if (nodeCount == 1) {
 			SENTINEL.setNext(SENTINEL);
@@ -229,7 +236,7 @@ public class DoublyLinkedList {
 	// Returns a string representation of this list exactly like that for MyArrayList.
 	public String toString() {
 		if (nodeCount == 0) {
-			return "";
+			return "[]";
 		}
 
 		StringBuilder newString = new StringBuilder();
@@ -259,15 +266,21 @@ public class DoublyLinkedList {
 	// Like question 7 on the SinglyLinkedList test:
 	// Add a "segment" (another list) onto the end of this list
 	public void addSegmentToEnd(DoublyLinkedList seg) {
+		if (seg == null) {
+			throw new NullPointerException();
+		}
+		
 		if (seg.size() != 0) {
 			seg.getSentinel().getNext().setPrevious(SENTINEL.getPrevious());
 			SENTINEL.getPrevious().setNext(seg.getSentinel().getNext());
 			seg.getSentinel().getPrevious().setNext(SENTINEL);
 			SENTINEL.setPrevious(seg.getSentinel().getPrevious());
+
+			seg.getSentinel().setNext(seg.getSentinel());
+			seg.getSentinel().setPrevious(seg.getSentinel());
 		}
 
 		nodeCount = nodeCount + (seg.size());
-
 	}
 	
 	// Like question 8 on the SinglyLinkedList test:
@@ -275,7 +288,11 @@ public class DoublyLinkedList {
 	// (on the test these nodes were assumed to contain CCCCCCCCGGGGGGGG, but here
 	// you do not need to assume or check for that)
 	public void removeCCCCCCCCGGGGGGGG(ListNode2<Nucleotide> nodeBefore) {
-		
+		if (nodeBefore == null) {
+			throw new IllegalArgumentException();
+		}
+
+
 		ListNode2<Nucleotide> nextNode = nodeBefore.getNext();
 		for (int i = 0; i < 16; i++) {
 			if (nextNode != SENTINEL) {
@@ -296,31 +313,44 @@ public class DoublyLinkedList {
 	
 	// THIS DOES NOT WORK... FIX
 	public boolean deleteSegment(DoublyLinkedList seg) {
-		int segLength = seg.size();
-		int index = 0;
-		int counter = 0;
+		if (seg == null) {
+			throw new NullPointerException();
+		}
+		if (seg.size() == 0 || seg.size() > nodeCount) {
+			return false;
+		}
 
-		for (ListNode2<Nucleotide> currentNode = SENTINEL.getNext(); currentNode != getNode(nodeCount - segLength); currentNode = currentNode.getNext()) {
+		int segLength = seg.size();
+
+
+		for (ListNode2<Nucleotide> currentNode = SENTINEL.getNext(); currentNode != SENTINEL; currentNode = currentNode.getNext()) {
+			ListNode2<Nucleotide> uptickingNode = currentNode;
 			ListNode2<Nucleotide> segNode = seg.getSentinel().getNext();
-			while (currentNode.getValue().equals(segNode.getValue()) && counter < segLength) {
-				currentNode.getNext();
-				segNode.getNext();
-				counter++;
+			boolean segmentExists = true;
+
+			for (int i = 0; i < seg.size(); i++) {
+				if (uptickingNode == SENTINEL || uptickingNode.getValue() != segNode.getValue()) {
+					segmentExists = false;
+					break;
+				}
+				uptickingNode = uptickingNode.getNext();
+				segNode = segNode.getNext();
+			
+			/////////////////////////GREAT BARRIER THIEF///////////////////////////////////
+
 			}
-			for (int i = 0; i < counter; i++) {
-				currentNode = currentNode.getPrevious();
-			}
-			if (counter != segLength) {
-				counter = 0;
-			}
-			if (counter == segLength) {
-					currentNode.getPrevious().setNext(getNode(index+counter));
+			if (segmentExists == true) {
+				currentNode.getPrevious().setNext(uptickingNode);
+				uptickingNode.setPrevious(currentNode.getPrevious());
+
 				nodeCount = nodeCount - segLength;
 				return true;
 			}
-			index++;
+
 		}
+
 		return false;
+
 	}
 	
 	// Like question 10 on the SinglyLinkedList test:
@@ -343,15 +373,29 @@ public class DoublyLinkedList {
 	// Like question 11 on the SinglyLinkedList test:
 	// Replaces every node containing "A" with three nodes containing "T" "A" "C"
 	public void replaceEveryAWithTAC() {
-		int index = 0;
+
 		for (ListNode2<Nucleotide> currentNode = SENTINEL.getNext(); currentNode != SENTINEL; currentNode = currentNode.getNext()) {
 			if (currentNode.getValue() == Nucleotide.A) {
-				this.add(index + 1, Nucleotide.C);
-				this.add(index, Nucleotide.T);
-				index = index + 2;
+				ListNode2<Nucleotide> nodeT = new ListNode2<Nucleotide>(Nucleotide.T);
+				nodeT.setNext(currentNode);
+				nodeT.setPrevious(currentNode.getPrevious());
+				currentNode.getPrevious().setNext(nodeT);
+				currentNode.setPrevious(nodeT);
+
+				/////////////////////////GREAT BARRIER REEF///////////////////////////////////
+
+				ListNode2<Nucleotide> nodeC = new ListNode2<Nucleotide>(Nucleotide.C);
+				nodeC.setNext(currentNode.getNext());
+				nodeC.setPrevious(currentNode);
+				currentNode.getNext().setPrevious(nodeC);
+				currentNode.setNext(nodeC);
+
 				nodeCount = nodeCount + 2;
+				if (currentNode.getNext() != SENTINEL) {
+					currentNode = currentNode.getNext();
+				}
+
 			}
-			index++;
 		}
 	}
 
