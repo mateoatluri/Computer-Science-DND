@@ -3,6 +3,13 @@ public class Recursion {
 	// Prints the value of every node in the singly linked list with the given head,
 	// but in reverse
 	public static void printListInReverse(ListNode head) {
+		ListNode current = head;
+		if (current.getNext() == null) {
+			System.out.println(current.getValue());
+		} else {
+			printListInReverse(current.getNext());
+			System.out.println(current.getValue());
+		}
 
 	}
 
@@ -15,6 +22,17 @@ public class Recursion {
 	// Trying to infect outside the confines of the grid also has no effect
 	// Precondition: grid has no null entries
 	public static void infect(String[][] grid, int r, int c) {
+		if (r < 0 || r > grid[0].length || c < 0 || c > grid.length) {
+			return;
+		}
+		if (grid[r][c].equals("vaccinated") || grid[r][c].equals("infected")) {
+			return;
+		}
+		infect(grid, r+1, c);
+		infect(grid, r-1, c);
+		infect(grid, r, c+1);
+		infect(grid, r, c-1);
+		grid[r][c] = "infected";
 
 	}
 
@@ -26,7 +44,13 @@ public class Recursion {
 	// {1,2}, {2,3}, {3,4}, {1,2,3}, {1,2,4}, {1,3,4}, {1,2,3,4}
 	// Precondition: n > 0
 	public static long countNonConsecutiveSubsets(int n) {
-
+		if (n == 1) {
+			return 2;
+		} if (n == 2) {
+			return 3;
+		} else {
+			return countNonConsecutiveSubsets(n-1) + countNonConsecutiveSubsets(n-2);
+		}
 	}
 
 	// A kid at the bottom of the stairs can jump up 1, 2, or 3 stairs at a time.
