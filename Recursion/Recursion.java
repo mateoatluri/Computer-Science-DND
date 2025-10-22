@@ -58,7 +58,11 @@ public class Recursion {
 	// Jumping 1-1-2 is considered different than jumping 1-2-1
 	// Precondition: n > 0
 	public static long countWaysToJumpUpStairs(int n) {
-
+		if (n == 1) {
+			return 1;
+		} else {
+			return (n-1) + countWaysToJumpUpStairs(n-1);
+		}
 	}
 
 	// Everything above this line does NOT require a recursive helper method
@@ -74,8 +78,15 @@ public class Recursion {
 	// "bc", "abc"
 	// Order is your choice
 	public static void printSubsets(String str) {
-
+		// the total amount of things to print is 2^str.length
+		/// if string is 'abc', then we want to make a helper that will give the possible
+		/// subsets of bc, returned in an array, so we can add a to all of them.
+		/// so we would do a + makeSubsets('bc') -- the helper would return '', 'b', 'c', 'bc'
+		/// in an array, and we'd add a to all of them
 	}
+
+	//make the helper return a string array, and take a string, it will return all the combinations of the things we have
+	// AND THE BLANK STRING ''.
 
 	// List contains a single String to start.
 	// Prints all the permutations of str on separate lines
