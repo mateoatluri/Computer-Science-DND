@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+
+
+
 public class Recursion {
 
 	// Prints the value of every node in the singly linked list with the given head,
@@ -78,15 +82,28 @@ public class Recursion {
 	// "bc", "abc"
 	// Order is your choice
 	public static void printSubsets(String str) {
-		// the total amount of things to print is 2^str.length
-		/// if string is 'abc', then we want to make a helper that will give the possible
-		/// subsets of bc, returned in an array, so we can add a to all of them.
-		/// so we would do a + makeSubsets('bc') -- the helper would return '', 'b', 'c', 'bc'
-		/// in an array, and we'd add a to all of them
+		if (str.length() == 0) {
+			System.out.println("");
+		} else if (str.length() == 1) {
+			//call addCharToList of 1 or smtg here
+		}
 	}
 
-	//make the helper return a string array, and take a string, it will return all the combinations of the things we have
-	// AND THE BLANK STRING ''.
+	//this helper method will add the specific char to all of the indices in the ArrayList, and return the original list plus all of this new stuff.
+	// so if we have 'a', 'b', '', 'ab', and our char is c, we will add c to all of those previous strings and return that plus the original 'a', 'b', '', 'ab'.
+
+	public ArrayList<String> addCharToList (char letter, ArrayList<String> list) {
+		ArrayList<String> listWithChar = new ArrayList<String>();
+		for (int i = 0; i < list.size(); i++) {
+			String toAdd = list.get(i);
+			toAdd = toAdd + letter;
+			listWithChar.add(toAdd);
+		}
+		list.addAll(listWithChar);
+		return list;
+
+	}
+
 
 	// List contains a single String to start.
 	// Prints all the permutations of str on separate lines
