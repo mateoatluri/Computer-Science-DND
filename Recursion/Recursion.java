@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-
+import java.lang.StringBuilder;
 
 
 public class Recursion {
@@ -82,28 +82,38 @@ public class Recursion {
 	// "bc", "abc"
 	// Order is your choice
 	public static void printSubsets(String str) {
-		if (str.length() == 0) {
-			System.out.println("");
-		} else if (str.length() == 1) {
-			//call addCharToList of 1 or smtg here
+		ArrayList<String> toPrint = createSubsets(str);
+		StringBuilder printableString = new StringBuilder();
+		for (int i = 0; i < toPrint.size() - 1; i++) {
+			printableString.append("\"" + toPrint.get(i) + "\", ");
+		}
+		printableString.append("\"" + toPrint.get(toPrint.size()-1) + "\"");
+		System.out.println(printableString);
+	}
+
+	// Our recursive helper method will, eventually, return every subset of the original string. To do this, it will 
+	// call itself on the list minus the first letter, until it gets all the way to one letter, where it will return
+	// that letter plus and empty string. Elsewhere, it will add the letter to calling the same method on the list minus that letter, for example "abc", calling it would do a + "bc" and we'd add a to every subset in bc, plus maintain the original bc subsets without a. This will ensure that at the end we have all subsets, with the first letter and without.
+	// our only parameter intakes a String that is the word/list that we want to create all the subsets of, so it'll start with the whole string, but then each recursive will call it with one less letter.
+	public static ArrayList<String> createSubsets(String list) {
+		if (list.length() == 1) {
+			ArrayList<String> toReturn = new ArrayList<String>();
+			toReturn.add("");
+			toReturn.add(list.substring(0, 1));
+			return toReturn;
+		} else {
+			String firstLetter = list.substring(0, 1);
+			ArrayList<String> previousSubsets = createSubsets(list.substring(1, list.length()));
+			ArrayList<String> toReturn = new ArrayList<String>();
+			for (int i = 0; i < previousSubsets.size(); i++) {
+				toReturn.add(firstLetter + previousSubsets.get(i));
+			}
+			toReturn.addAll(previousSubsets);
+			return toReturn;
 		}
 	}
 
-	//this helper method will add the specific char to all of the indices in the ArrayList, and return the original list plus all of this new stuff.
-	// so if we have 'a', 'b', '', 'ab', and our char is c, we will add c to all of those previous strings and return that plus the original 'a', 'b', '', 'ab'.
-
-	public ArrayList<String> addCharToList (char letter, ArrayList<String> list) {
-		ArrayList<String> listWithChar = new ArrayList<String>();
-		for (int i = 0; i < list.size(); i++) {
-			String toAdd = list.get(i);
-			toAdd = toAdd + letter;
-			listWithChar.add(toAdd);
-		}
-		list.addAll(listWithChar);
-		return list;
-
-	}
-
+	
 
 	// List contains a single String to start.
 	// Prints all the permutations of str on separate lines

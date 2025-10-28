@@ -9,7 +9,9 @@ public class RecursionTester {
 
         // Recursion.printListInReverse(head);
 
-        System.out.println(Recursion.countWaysToJumpUpStairs(5));
+        //System.out.println(Recursion.countWaysToJumpUpStairs(5));
+
+        Recursion.printSubsets("abc");
 
     }
 }
