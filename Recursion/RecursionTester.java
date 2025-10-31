@@ -11,7 +11,9 @@ public class RecursionTester {
 
         //System.out.println(Recursion.countWaysToJumpUpStairs(5));
 
-        Recursion.printSubsets("abc");
+        //Recursion.printSubsets("abc");
+
+        Recursion.printPermutations("bcd");
 
     }
 }

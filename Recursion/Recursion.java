@@ -82,13 +82,17 @@ public class Recursion {
 	// "bc", "abc"
 	// Order is your choice
 	public static void printSubsets(String str) {
-		ArrayList<String> toPrint = createSubsets(str);
-		StringBuilder printableString = new StringBuilder();
-		for (int i = 0; i < toPrint.size() - 1; i++) {
-			printableString.append("\"" + toPrint.get(i) + "\", ");
+		if (str.length() == 0) {
+			System.out.println("");
+		} else {
+			ArrayList<String> toPrint = createSubsets(str);
+			StringBuilder printableString = new StringBuilder();
+			for (int i = 0; i < toPrint.size() - 1; i++) {
+				printableString.append("\"" + toPrint.get(i) + "\", ");
+			}
+			printableString.append("\"" + toPrint.get(toPrint.size()-1) + "\"");
+			System.out.println(printableString);
 		}
-		printableString.append("\"" + toPrint.get(toPrint.size()-1) + "\"");
-		System.out.println(printableString);
 	}
 
 	// Our recursive helper method will, eventually, return every subset of the original string. To do this, it will 
@@ -122,13 +126,85 @@ public class Recursion {
 	// "cab", "cba"
 	// Order is your choice
 	public static void printPermutations(String str) {
+		if (str.length() == 0) {
+			System.out.println("");
+		} else {
+			ArrayList<String> toPrint = createPermutations(str);
+			StringBuilder printableString = new StringBuilder();
+			for (int i = 0; i < toPrint.size() - 1; i++) {
+				printableString.append("\"" + toPrint.get(i) + "\", ");
+			}
+			printableString.append("\"" + toPrint.get(toPrint.size()-1) + "\"");
+			System.out.println(printableString);
+		}
 
+	}
+
+	// This method creates all the actual permutations and the print method above just prints it. 
+	// It has a base case of the list is 2 and will just print ab, ba. If not, it will call itself on
+	// the method without the first letter, then for each permutation that it returns I will add the first letter
+	// to each position possible. ex. with abc, i call it on bc, get bc & cb, and then add a to all 3 possible positions
+	// for each of the two permutations. The parameter is the string that we're intaking, but it'll be without the first letter.
+	public static ArrayList<String> createPermutations(String str) {
+		ArrayList<String> toReturn = new ArrayList<String>();
+		if (str.length() == 1) {
+			toReturn.add(str);
+			return toReturn;
+		} else if (str.length() == 2) {
+			toReturn.add(str);
+			toReturn.add(str.substring(1, 2) + str.substring(0, 1));
+			return toReturn;
+		} else {
+			String letter = str.substring(0, 1);
+			ArrayList<String> permutations = createPermutations(str.substring(1));
+			for (int i = 0; i < permutations.size(); i++) {
+				for (int j = 0; j <= permutations.get(i).length(); j++) {
+					String currentPermutation = permutations.get(i); 
+					String toAdd = "";
+					if (j == 0) {
+						toAdd = letter + currentPermutation;
+					} else if (j == currentPermutation.length()) {
+						toAdd = currentPermutation + letter;
+					}
+					else {
+						toAdd = currentPermutation.substring(0, j) + letter + currentPermutation.substring(j, currentPermutation.length());
+					}
+					toReturn.add(toAdd);
+				}
+			}
+			return toReturn;
+		}
 	}
 
 	// Performs a mergeSort on the given array of ints
 	// Precondition: you may assume there are NO duplicates!!!
 	public static void mergeSort(int[] ints) {
 
+	}
+
+	public static ArrayList<Integer> recombineArrays(ArrayList<Integer> oneArray, ArrayList<Integer> twoArray) {
+		int pointerOne = 0;
+		int pointerTwo = 0;
+		ArrayList<Integer> newList = new ArrayList<Integer>();
+		while (pointerOne != oneArray.size() && pointerTwo != twoArray.size()) {
+			if (oneArray.get(pointerOne) < twoArray.get(pointerTwo)) {
+				newList.add(oneArray.get(pointerOne));
+				pointerOne++;
+			} else {
+				newList.add(twoArray.get(pointerTwo));
+				pointerTwo++;
+			}
+		}
+		if (pointerOne == oneArray.size()) {
+			for (int i = pointerTwo; i < twoArray.size(); i++) {
+				newList.add(twoArray.get(pointerTwo));
+			}
+		} else if (pointerTwo == twoArray.size()) {
+			for (int i = pointerOne; i < oneArray.size(); i++) {
+				newList.add(oneArray.get(pointerOne));
+			}
+		}
+		return newList;
 	}
 
 	// Performs a quickSort on the given array of ints
