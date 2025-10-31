@@ -197,11 +197,11 @@ public class Recursion {
 		}
 		if (pointerOne == oneArray.size()) {
 			for (int i = pointerTwo; i < twoArray.size(); i++) {
-				newList.add(twoArray.get(pointerTwo));
+				newList.add(twoArray.get(i));
 			}
 		} else if (pointerTwo == twoArray.size()) {
 			for (int i = pointerOne; i < oneArray.size(); i++) {
-				newList.add(oneArray.get(pointerOne));
+				newList.add(oneArray.get(i));
 			}
 		}
 		return newList;
