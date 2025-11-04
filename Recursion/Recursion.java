@@ -179,9 +179,42 @@ public class Recursion {
 	// Performs a mergeSort on the given array of ints
 	// Precondition: you may assume there are NO duplicates!!!
 	public static void mergeSort(int[] ints) {
-
+		if (ints.length == 1 || ints.length == 0) {
+			return;
+		}
+		
+		int[] left = new int[ints.length / 2];
+		int[] right;
+		if (ints.length % 2 == 1) {
+			right = new int[(ints.length / 2) + 1];
+		} else {
+			right = new int[ints.length / 2];
+		}
+		
+		for (int i = 0; i < ints.length; i++) {
+			if (i < ints.length / 2) {
+				left[i] = ints[i];
+			} else {
+				right[i - (ints.length / 2)] = ints[i];
+			}
+		}
+		mergeSort(left);
+		mergeSort(right);
+		ArrayList<Integer> leftSide = new ArrayList<>();
+		ArrayList<Integer> rightSide = new ArrayList<>();
+		for (int i = 0; i < left.length; i++) {
+			leftSide.add(left[i]);
+		}
+		for (int i = 0; i < right.length; i++) {
+			rightSide.add(right[i]);
+		}
+		ArrayList<Integer> finalList = recombineArrays(leftSide, rightSide);
+		for (int i = 0; i < finalList.size(); i++) {
+			ints[i] = finalList.get(i);
+		}
 	}
 
+	// this helper is not recursive, but our main method is. this helper will take in two variables that are assumed to be sorted arrays, and this method will recombine those arrays into one sorted array. This is helpful for the recurisve method above because after we break them up, this will recombine them.
 	public static ArrayList<Integer> recombineArrays(ArrayList<Integer> oneArray, ArrayList<Integer> twoArray) {
 		int pointerOne = 0;
 		int pointerTwo = 0;
@@ -214,6 +247,7 @@ public class Recursion {
 
 	}
 
+	public static 
 	// Prints a sequence of moves (one on each line)
 	// to complete a Towers of Hanoi problem:
 	// disks start on tower 0 and must end on tower 2.

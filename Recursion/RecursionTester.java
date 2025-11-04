@@ -13,7 +13,21 @@ public class RecursionTester {
 
         //Recursion.printSubsets("abc");
 
-        Recursion.printPermutations("bcd");
+        //Recursion.printPermutations("bcd");
+
+        int[] intArray = new int[]{3, 1, 4, 2, 5};
+        for (int i = 0; i < intArray.length; i++) {
+            System.out.println(intArray[i]);
+        }
+
+        Recursion.mergeSort(intArray);
+
+        System.out.println("----");
+
+        for (int i = 0; i < intArray.length; i++) {
+            System.out.println(intArray[i]);
+        }
+        
 
     }
 }
