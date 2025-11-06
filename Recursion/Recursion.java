@@ -255,7 +255,29 @@ public class Recursion {
 	// the form "1 -> 2", meaning "take the top disk of tower 1 and
 	// put it on tower 2" etc.
 	public static void solveHanoi(int startingDisks) {
+		if (startingDisks == 1) {
+			System.out.println("0 --> 2");
+		} else {
+			solveHanoiWithLess(startingDisks - 1, 0, 1, 2);
+			System.out.println("0 -> 2");
+			solveHanoiWithLess(startingDisks - 1, 1, 2, 0);
+		}
+	}
 
+	public static void solveHanoiWithLess(int numDisks, int startPos, int endPos, int freePos) {
+		if (numDisks == 1) {
+			System.out.println(startPos + " -> " + endPos);
+			return;
+		} else if (numDisks == 2) {
+			System.out.println(startPos + " -> " + freePos);
+			System.out.println(startPos + " -> " + endPos);
+			System.out.println(freePos + " -> " + endPos);
+			return;
+		} else {
+			solveHanoiWithLess(numDisks - 1, startPos, freePos, endPos);
+			System.out.println(startPos + " -> " + endPos);
+			solveHanoiWithLess(numDisks - 1, freePos, endPos, startPos);
+		}
 	}
 
 	// You are partaking in a scavenger hunt!

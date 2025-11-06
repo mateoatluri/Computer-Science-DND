@@ -15,18 +15,20 @@ public class RecursionTester {
 
         //Recursion.printPermutations("bcd");
 
-        int[] intArray = new int[]{3, 1, 4, 2, 5};
-        for (int i = 0; i < intArray.length; i++) {
-            System.out.println(intArray[i]);
-        }
+        // int[] intArray = new int[]{3, 1, 4, 2, 5};
+        // for (int i = 0; i < intArray.length; i++) {
+        //     System.out.println(intArray[i]);
+        // }
 
-        Recursion.mergeSort(intArray);
+        // Recursion.mergeSort(intArray);
 
-        System.out.println("----");
+        // System.out.println("----");
 
-        for (int i = 0; i < intArray.length; i++) {
-            System.out.println(intArray[i]);
-        }
+        // for (int i = 0; i < intArray.length; i++) {
+        //     System.out.println(intArray[i]);
+        // }
+
+        Recursion.solveHanoi(5);
         
 
     }
