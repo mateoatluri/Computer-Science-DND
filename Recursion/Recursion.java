@@ -240,14 +240,14 @@ public class Recursion {
 		return newList;
 	}
 
-	// Performs a quickSort on the given array of ints
+	// Performs a quickSort on the given  array of ints
 	// Use the middle element (index n/2) as the pivot
 	// Precondition: you may assume there are NO duplicates!!!
 	public static void quickSort(int[] ints) {
 
 	}
 
-	public static 
+	//public static
 	// Prints a sequence of moves (one on each line)
 	// to complete a Towers of Hanoi problem:
 	// disks start on tower 0 and must end on tower 2.
