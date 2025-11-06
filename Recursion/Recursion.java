@@ -263,7 +263,7 @@ public class Recursion {
 			solveHanoiWithLess(startingDisks - 1, 1, 2, 0);
 		}
 	}
-
+	// this method will recursively solve Hanoi with one less than the starting value will be. It will recursively call itself with one less disk each time, until our base case which is when the number of disks is 2. We have 3 indices that we track, the starting position where the disks are, the end, and the free position. 
 	public static void solveHanoiWithLess(int numDisks, int startPos, int endPos, int freePos) {
 		if (numDisks == 1) {
 			System.out.println(startPos + " -> " + endPos);
