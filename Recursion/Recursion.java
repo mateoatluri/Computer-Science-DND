@@ -26,17 +26,18 @@ public class Recursion {
 	// Trying to infect outside the confines of the grid also has no effect
 	// Precondition: grid has no null entries
 	public static void infect(String[][] grid, int r, int c) {
-		if (r < 0 || r > grid[0].length || c < 0 || c > grid.length) {
+		if (r < 0 || r > grid.length || c < 0 || c > grid[0].length) {
 			return;
 		}
 		if (grid[r][c].equals("vaccinated") || grid[r][c].equals("infected")) {
 			return;
 		}
+		grid[r][c] = "infected";
 		infect(grid, r+1, c);
 		infect(grid, r-1, c);
 		infect(grid, r, c+1);
 		infect(grid, r, c-1);
-		grid[r][c] = "infected";
+
 
 	}
 
@@ -64,8 +65,13 @@ public class Recursion {
 	public static long countWaysToJumpUpStairs(int n) {
 		if (n == 1) {
 			return 1;
-		} else {
-			return (n-1) + countWaysToJumpUpStairs(n-1);
+		} else if (n == 2) {
+			return 2;
+		} else if (n == 3) {
+			return 4;
+		}
+		else {
+			return countWaysToJumpUpStairs(n-1) + countWaysToJumpUpStairs(n-2) + countWaysToJumpUpStairs(n-3);
 		}
 	}
 
@@ -300,6 +306,51 @@ public class Recursion {
 	// time 9
 	// for a total of 20 points, so it would return 20.
 	public static int scavHunt(int[] times, int[] points) {
+		return maxReward(times, points, 0);
+	}
+
+	public static int maxReward(int[] times, int[] points, int index) {
+		if (times.length - (index + 1) < 0) {
+			return 0;
+		} else if (times.length - (index + 1) == 0) {
+			return points[index];
+		}
+
+		int firstIndexFiveGreater = -1;
+		if (times.length - (index + 1) > 5) {
+			for (int i = 1; i < 6; i++) {
+				if (times[i + index] > (times[index] + 4)) {
+					firstIndexFiveGreater = i + index;
+					break;
+				}
+			}
+		} else {
+			for (int i = 0; i < times.length - index; i++) {
+				if (times[i + index] > (times[index] + 4)) {
+					firstIndexFiveGreater = i + index;
+					break;
+				}
+			}
+		}
+
+		int greatestValueLeft = 0;
+		if (firstIndexFiveGreater == -1) {
+			for (int i = index; i < points.length; i++) {
+				if (points[i] > greatestValueLeft) {
+					greatestValueLeft = points[i];
+				}
+			}
+			return greatestValueLeft;
+		}
+
+		int valueIncluded = points[index] + maxReward(times, points, firstIndexFiveGreater);
+		int valueExcluded = maxReward(times, points, index + 1);
+
+		if (valueIncluded > valueExcluded) {
+			return valueIncluded;
+		} else {
+			return valueExcluded;
+		}
 
 	}
 

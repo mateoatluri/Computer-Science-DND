@@ -28,7 +28,12 @@ public class RecursionTester {
         //     System.out.println(intArray[i]);
         // }
 
-        Recursion.solveHanoi(5);
+        //Recursion.solveHanoi(5);
+
+        int[] times = {3, 7, 9};
+        int[] points = {10, 15, 10};
+
+        System.out.println(Recursion.scavHunt(times, points));
         
 
     }
