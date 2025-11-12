@@ -89,15 +89,19 @@ public class Recursion {
 	// Order is your choice
 	public static void printSubsets(String str) {
 		if (str.length() == 0) {
-			System.out.println("");
+			System.out.println();
 		} else {
+			// ArrayList<String> toPrint = createSubsets(str);
+			// StringBuilder printableString = new StringBuilder();
+			// for (int i = 0; i < toPrint.size() - 1; i++) {
+			// 	printableString.append("\"" + toPrint.get(i) + "\", ");
+			// }
+			// printableString.append("\"" + toPrint.get(toPrint.size()-1) + "\"");
+			// System.out.println(printableString);
 			ArrayList<String> toPrint = createSubsets(str);
-			StringBuilder printableString = new StringBuilder();
-			for (int i = 0; i < toPrint.size() - 1; i++) {
-				printableString.append("\"" + toPrint.get(i) + "\", ");
+			for (int i = 0; i < toPrint.size(); i++) {
+				System.out.println(toPrint.get(i));
 			}
-			printableString.append("\"" + toPrint.get(toPrint.size()-1) + "\"");
-			System.out.println(printableString);
 		}
 	}
 
