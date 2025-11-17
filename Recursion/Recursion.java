@@ -137,16 +137,21 @@ public class Recursion {
 	// Order is your choice
 	public static void printPermutations(String str) {
 		if (str.length() == 0) {
-			System.out.println("");
+			System.out.println();
 		} else {
+			// ArrayList<String> toPrint = createPermutations(str);
+			// StringBuilder printableString = new StringBuilder();
+			// for (int i = 0; i < toPrint.size() - 1; i++) {
+			// 	printableString.append("\"" + toPrint.get(i) + "\", ");
+			// }
+			// printableString.append("\"" + toPrint.get(toPrint.size()-1) + "\"");
+			// System.out.println(printableString);
+
 			ArrayList<String> toPrint = createPermutations(str);
-			StringBuilder printableString = new StringBuilder();
-			for (int i = 0; i < toPrint.size() - 1; i++) {
-				printableString.append("\"" + toPrint.get(i) + "\", ");
-			}
-			printableString.append("\"" + toPrint.get(toPrint.size()-1) + "\"");
-			System.out.println(printableString);
+			for (int i = 0; i < toPrint.size(); i++) {
+				System.out.println(toPrint.get(i));
 		}
+	}
 
 	}
 
@@ -253,8 +258,65 @@ public class Recursion {
 	// Performs a quickSort on the given  array of ints
 	// Use the middle element (index n/2) as the pivot
 	// Precondition: you may assume there are NO duplicates!!!
+	
 	public static void quickSort(int[] ints) {
+		int[] toPrint = breakItDown(ints, (ints.length / 2));
+		for (int i = 0; i < toPrint.length; i++) {
+			System.out.println(toPrint[i]);
+		}
+	}
+	// this helper method takes in an int array and a pivot and it will create two arrays, one with all the ints that are less than the value of the pivot and one with all the values that are greater than the pivot. Then it will recombine these into one array with the pivot in the middle and the smaller on the left and greater on the right. It calls itself on the left and right sides until they're sorted.
+	public static int[] breakItDown(int[] ints, int pivot) {
+		if (ints.length == 0 || ints.length == 1) {
+			return ints;
+		}
+		
+		int numOfLessThan = 0;
+		int numOfGreaterThan = 0;
+		for (int i = 0; i < ints.length; i++) {
+			if (ints[i] > ints[pivot]) {
+				numOfGreaterThan++;
+			} else {
+				if (ints[i] != ints[pivot]) {
+					numOfLessThan++;
+				}
+			}
+		}
+		
+		int[] lessThan = new int[numOfLessThan];
+		int[] greaterThan = new int[numOfGreaterThan];
 
+		int countingGreaterThan = 0;
+		int countingLessThan = 0;
+
+		for (int i = 0; i < ints.length; i++) {
+			if (ints[i] > ints[pivot]) {
+				greaterThan[countingGreaterThan] = ints[i];
+				countingGreaterThan++;
+			} else {
+				lessThan[countingLessThan] = ints[i];
+				countingLessThan++;
+			}
+		}
+
+		int leftPivot = lessThan.length / 2;
+		int rightPivot = greaterThan.length / 2;
+		int[] leftSideArray = breakItDown(lessThan, leftPivot);
+		int[] rightSideArray = breakItDown(greaterThan, rightPivot);
+
+		int[] finalArray = new int[ints.length];
+
+		for (int i = 0; i < finalArray.length; i++) {
+			if (i < leftSideArray.length) {
+				finalArray[i] = leftSideArray[i];
+			} else if (i == leftSideArray.length) {
+				finalArray[i] = ints[pivot];
+			} else {
+				finalArray[i] = rightSideArray[i - pivot];
+			}
+		}
+
+		return finalArray;
 	}
 
 	//public static
