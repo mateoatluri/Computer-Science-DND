@@ -30,8 +30,8 @@ public class RecursionTester {
 
         //Recursion.solveHanoi(5);
 
-        int[] times = {3, 7, 9};
-        int[] points = {10, 15, 10};
+        int[] times = {1, 2, 3, 4, 5, 6, 7, 15};
+        int[] points = {1, 1, 1, 1, 1, 1, 1, 20};
 
         System.out.println(Recursion.scavHunt(times, points));
         

@@ -7,6 +7,10 @@ public class Recursion {
 	// Prints the value of every node in the singly linked list with the given head,
 	// but in reverse
 	public static void printListInReverse(ListNode head) {
+		if (head == null) {
+			throw new NullPointerException();
+		}
+		
 		ListNode current = head;
 		if (current.getNext() == null) {
 			System.out.println(current.getValue());
@@ -261,8 +265,11 @@ public class Recursion {
 	
 	public static void quickSort(int[] ints) {
 		int[] toPrint = breakItDown(ints, (ints.length / 2));
+
+
 		for (int i = 0; i < toPrint.length; i++) {
-			System.out.println(toPrint[i]);
+			ints[i] = toPrint[i];
+			//System.out.println(ints[i]);
 		}
 	}
 	// this helper method takes in an int array and a pivot and it will create two arrays, one with all the ints that are less than the value of the pivot and one with all the values that are greater than the pivot. Then it will recombine these into one array with the pivot in the middle and the smaller on the left and greater on the right. It calls itself on the left and right sides until they're sorted.
@@ -277,7 +284,7 @@ public class Recursion {
 			if (ints[i] > ints[pivot]) {
 				numOfGreaterThan++;
 			} else {
-				if (ints[i] != ints[pivot]) {
+				if (i != pivot) {
 					numOfLessThan++;
 				}
 			}
@@ -294,8 +301,11 @@ public class Recursion {
 				greaterThan[countingGreaterThan] = ints[i];
 				countingGreaterThan++;
 			} else {
-				lessThan[countingLessThan] = ints[i];
-				countingLessThan++;
+				if (i != pivot) {
+					lessThan[countingLessThan] = ints[i];
+					countingLessThan++;
+				}
+
 			}
 		}
 
@@ -312,7 +322,7 @@ public class Recursion {
 			} else if (i == leftSideArray.length) {
 				finalArray[i] = ints[pivot];
 			} else {
-				finalArray[i] = rightSideArray[i - pivot];
+				finalArray[i] = rightSideArray[i - (leftSideArray.length + 1)];
 			}
 		}
 
@@ -328,7 +338,7 @@ public class Recursion {
 	// put it on tower 2" etc.
 	public static void solveHanoi(int startingDisks) {
 		if (startingDisks == 1) {
-			System.out.println("0 --> 2");
+			System.out.println("0 -> 2");
 		} else {
 			solveHanoiWithLess(startingDisks - 1, 0, 1, 2);
 			System.out.println("0 -> 2");
@@ -376,9 +386,9 @@ public class Recursion {
 	}
 
 	public static int maxReward(int[] times, int[] points, int index) {
-		if (times.length - (index + 1) < 0) {
+		if (index >= times.length) {
 			return 0;
-		} else if (times.length - (index + 1) == 0) {
+		} else if (index == times.length - 1) {
 			return points[index];
 		}
 
