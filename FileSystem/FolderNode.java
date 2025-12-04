@@ -17,7 +17,11 @@ public class FolderNode extends FileSystemNode {
 
     @Override
     public boolean isFolder() {
-        return true;
+        if (this instanceof FolderNode == true) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -108,21 +112,67 @@ public class FolderNode extends FileSystemNode {
     @Override
     public int getHeight() {
         // TODO: compute the maximum height among children; empty folders have value 0
-        
-        if (this.isFolder() == true) {
-            if (children.size() == 0)
+        List<FileSystemNode> myLilChildren = this.getChildren();
+        int greatestHeight = 0;
+
+
+        if (myLilChildren.size() == 0 || !this.isFolder()) {
+            return 0;
+        } else if (this.isFolder() == true) {
+            for (int i = 0; i < myLilChildren.size(); i++) {
+                int thisChildsHeight = myLilChildren.get(i).getHeight();
+                if (thisChildsHeight > greatestHeight) {
+                    greatestHeight = thisChildsHeight;
+                }
+            }
         }
+        
+        return greatestHeight + 1;
+
     }
 
     @Override
     public int getSize() {
         // TODO: sum the sizes of all files contained in this directory and its descendants
-        return 0;
+        
+        List<FileSystemNode> myLilChildren = this.getChildren();
+        int size = 0;
+
+        if (!this.isFolder()) {
+            return this.getSize();
+        } else if (myLilChildren.size() == 0){
+            return 0;
+        }
+        
+        else if (this.isFolder() == true) {
+            for (int i = 0; i < myLilChildren.size(); i++) {
+                size += myLilChildren.get(i).getSize();
+            }
+        }
+        
+        return size;
+        
     }
 
     @Override
     public int getTotalNodeCount() {
         // TODO: count this directory plus all descendant files and folders
-        return 0;
+        
+
+        List<FileSystemNode> myLilChildren = this.getChildren();
+        int size = 0;
+
+        if (myLilChildren.size() == 0 || !this.isFolder()) {
+            return 1;
+        } else if (this.isFolder() == true) {
+            for (int i = 0; i < myLilChildren.size(); i++) {
+                size += myLilChildren.get(i).getTotalNodeCount();
+            }
+        }
+        
+        return size + 1;
     }
+
+
 }
+

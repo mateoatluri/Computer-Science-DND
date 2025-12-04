@@ -2,6 +2,9 @@
  * Represents a node in a file system tree.
  * Both folders and files share a name and a reference to their parent folder.
  */
+
+import java.lang.StringBuilder;
+
 public abstract class FileSystemNode {
 
     private String name;
@@ -39,7 +42,16 @@ public abstract class FileSystemNode {
      */
     public int getDepth() {
         // TODO: compute depth by following parent references up to the root
-        return 0;
+        
+        FileSystemNode current = this;
+        int depthTracker = 0;
+        
+        while (current.getParent() != null) {
+            depthTracker++;
+            current = current.getParent();
+        }
+
+        return depthTracker;
     }
 
     /**
@@ -67,6 +79,19 @@ public abstract class FileSystemNode {
     @Override
     public String toString() {
         // TODO: build a string like "/root/folder/subfolder/file"
-        return null;
+        StringBuilder newString = new StringBuilder("/");
+        
+        if (this.getDepth() == 0) {
+            
+            //newString.append(this.getName());
+        }
+        else if (this.getDepth() > 0) {
+           
+            newString.append(this.getParent().toString());
+            newString.append("/");
+            newString.append(this.getName());
+        }
+
+        return newString.toString();
     }
 }
