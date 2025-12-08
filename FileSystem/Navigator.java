@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.List;
 
 /**
  * Handles interactive navigation of the file system
@@ -48,6 +49,36 @@ public class Navigator {
      */
     private void cd(String[] args) {
         // TODO: implement directory navigation
+
+        FolderNode inital = currentDirectory;
+        
+        if (args[0].charAt(0) == '/') {
+            currentDirectory = fileSystem.getRoot();
+            args[0] = args[0].substring(1);
+        }
+        
+        String[] newArgs = args[0].split("/");
+
+        for (int i = 0; i < newArgs.length; i++) {
+            if (newArgs[i].equals("..")) {
+                currentDirectory = currentDirectory.getParent();
+            } else if (newArgs[i].equals(".")) {
+                
+            } else {
+                if (currentDirectory.getChildByName(newArgs[i]) == null) {
+                    System.out.println("no such file or directory: " + newArgs[i]);
+                    currentDirectory = inital;
+                    return;
+                } else if (currentDirectory.getChildByName(newArgs[i]).isFolder() == false) {
+                        System.out.println("not a folder");
+                        currentDirectory = inital;
+                        return;
+                } else {
+                    currentDirectory = (FolderNode) currentDirectory.getChildByName(newArgs[i]);
+                }
+            }
+        }
+
     }
 
     /**
@@ -56,6 +87,14 @@ public class Navigator {
      */
     private void ls(String[] args) {
         // TODO: print names of all child nodes of currentDirectory
+
+        cd(args);
+
+        List<FileSystemNode> myKids = currentDirectory.getChildren();
+
+        for (FileSystemNode bebe : myKids) {
+            System.out.println(bebe.getName());
+        }
     }
 
     /**
@@ -63,6 +102,17 @@ public class Navigator {
      */
     private void mkdir(String[] args) {
         // TODO: read folder name from args and delegate to currentDirectory.addFolder(...)
+
+        List<FileSystemNode> myKids = currentDirectory.getChildren();
+
+        for (int i = 0; i < myKids.size(); i++) {
+            if (myKids.get(i).getName().toLowerCase().equals(args[0].toLowerCase())) {
+                System.out.println("File exists");
+                return;
+            }
+        }
+
+        currentDirectory.addFolder(args[0]);
     }
 
     /**
@@ -70,6 +120,19 @@ public class Navigator {
      */
     private void touch(String[] args) {
         // TODO: read file name and size from args and delegate to currentDirectory.addFile(...)
+
+        List<FileSystemNode> myKids = currentDirectory.getChildren();
+
+        for (int i = 0; i < myKids.size(); i++) {
+            if (myKids.get(i).getName().toLowerCase().equals(args[0].toLowerCase())) {
+                System.out.println("File exists");
+                return;
+            }
+        }
+
+        int size = Integer.parseInt(args[1]);
+
+        currentDirectory.addFile(args[0], size);
     }
 
     /**
