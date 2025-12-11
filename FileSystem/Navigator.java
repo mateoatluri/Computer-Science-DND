@@ -141,13 +141,40 @@ public class Navigator {
      */
     private void find(String[] args) {
         // TODO: use recursive search starting at currentDirectory
+
+
+        if (currentDirectory.getName().equals(args[0])) {
+            currentDirectory.toString();
+
+        }
+
+        if (currentDirectory.getChildren().size() == 0 || !currentDirectory.isFolder()) {
+            return;
+        }
+
+        List<FileSystemNode> children = currentDirectory.getChildren();
+
+        for (FileSystemNode child : children) {
+            if (child.isFolder() == true) {
+                currentDirectory = (FolderNode) child;
+                find(args);
+            } else {
+                if (child.getName().equals(args[0])) {
+                    child.toString();
+                }
+            }
+        }
     }
+
+
 
     /**
      * Prints the absolute path of the current directory, from the root to this node.
      */
     private void pwd(String[] args) {
         // TODO: use currentDirectory.toString() or similar path builder
+
+        System.out.println(currentDirectory.toString());
     }
 
     /**
@@ -164,6 +191,8 @@ public class Navigator {
      */
     private void count(String[] args) {
         // TODO: call a counting method on currentDirectory
+
+        System.out.println(currentDirectory.getTotalNodeCount());
     }
 
     /**
@@ -171,6 +200,8 @@ public class Navigator {
      */
     private void size(String[] args) {
         // TODO: call a size-calculation method on currentDirectory
+
+        System.out.println(currentDirectory.getSize());
     }
 
     /**
@@ -179,6 +210,8 @@ public class Navigator {
      */
     private void depth(String[] args) {
         // TODO: use a depth method on currentDirectory
+
+        System.out.println(currentDirectory.getDepth());
     }
 
     /**
@@ -188,6 +221,8 @@ public class Navigator {
      */
     private void height(String[] args) {
         // TODO: use a height method on currentDirectory
+
+        System.out.println(currentDirectory.getHeight());
     }
 
     /**

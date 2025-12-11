@@ -28,7 +28,7 @@ public class FileSystemTester {
             System.out.println("[PASS] Root is non-null.");
         }
 
-        System.out.println("Root toString(): " + root.toString());
+        System.out.println("Root toString(): <" + root.toString()+">");
         System.out.println("Expected at root: '/' (or equivalent)");
 
         // 2. Build a small structure under root
@@ -42,5 +42,13 @@ public class FileSystemTester {
         int heightRoot = root.getHeight();
         int sizeRoot = root.getSize();
         int totalNodesRoot = root.getTotalNodeCount();
+
+        Navigator n = new Navigator(tree);
+        n.processUserInputString("mkdir whatever");
+        n.processUserInputString("ls");
+        n.processUserInputString("cd whatever");
+        n.processUserInputString("depth");
     }
+
+
 }
