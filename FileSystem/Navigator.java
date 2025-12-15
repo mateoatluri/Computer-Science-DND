@@ -52,6 +52,12 @@ public class Navigator {
 
         FolderNode inital = currentDirectory;
         
+        if (args.length == 0) {
+            currentDirectory = fileSystem.getRoot();
+            return;
+        }
+
+
         if (args[0].charAt(0) == '/') {
             currentDirectory = fileSystem.getRoot();
             args[0] = args[0].substring(1);
@@ -88,12 +94,16 @@ public class Navigator {
     private void ls(String[] args) {
         // TODO: print names of all child nodes of currentDirectory
 
-        cd(args);
+        //cd(args);
 
         List<FileSystemNode> myKids = currentDirectory.getChildren();
 
         for (FileSystemNode bebe : myKids) {
-            System.out.println(bebe.getName());
+            if (bebe.isFolder() == true) {
+                System.out.println(bebe.getName() + "/");
+            } else {
+                System.out.println(bebe.getName());
+            }
         }
     }
 
@@ -142,28 +152,29 @@ public class Navigator {
     private void find(String[] args) {
         // TODO: use recursive search starting at currentDirectory
 
+        findHelper(args, currentDirectory);
+    }
 
-        if (currentDirectory.getName().equals(args[0])) {
-            currentDirectory.toString();
-
+    private void findHelper(String[] args, FileSystemNode currentNode) {
+        if (currentNode.getName().equals(args[0])) {
+            System.out.println(currentNode.toString());
         }
 
-        if (currentDirectory.getChildren().size() == 0 || !currentDirectory.isFolder()) {
+        if (!currentNode.isFolder()) {
             return;
         }
 
-        List<FileSystemNode> children = currentDirectory.getChildren();
+        if (currentNode.isFolder()) {
+            FolderNode currentFolder = (FolderNode) currentNode;
+            if (currentFolder.getChildren().size() == 0) {
+                return;
+            }
 
-        for (FileSystemNode child : children) {
-            if (child.isFolder() == true) {
-                currentDirectory = (FolderNode) child;
-                find(args);
-            } else {
-                if (child.getName().equals(args[0])) {
-                    child.toString();
-                }
+            for (FileSystemNode child : currentFolder.getChildren()) {
+                findHelper(args, child);
             }
         }
+
     }
 
 
@@ -192,7 +203,7 @@ public class Navigator {
     private void count(String[] args) {
         // TODO: call a counting method on currentDirectory
 
-        System.out.println(currentDirectory.getTotalNodeCount());
+        System.out.println(currentDirectory.getTotalNodeCount() - 1);
     }
 
     /**

@@ -79,37 +79,39 @@ public abstract class FileSystemNode {
     @Override
     public String toString() {
         // TODO: build a string like "/root/folder/subfolder/file"
-        StringBuilder newString = new StringBuilder("/");
+        StringBuilder newString = new StringBuilder("");
         
-        if (this.getDepth() == 0) {
+        if (this.getParent() == null) {
             
-            //newString.append(this.getName());
-        }
-        else if (this.getDepth() > 0) {
-           
+            newString.append(this.getName());
+
+        } else if (this.getParent().getParent() == null) {
+            newString.append(this.getParent().toString());
+            newString.append(this.getName());
+        } else {
             newString.append(this.getParent().toString());
             newString.append("/");
             newString.append(this.getName());
         }
-
+        
         return newString.toString();
     }
 
 
-    public String toString(FileSystemNode start) {
-        StringBuilder newString = new StringBuilder("");
+    // public String toString(FileSystemNode start) {
+    //     StringBuilder newString = new StringBuilder("");
 
-        if (this.equals(start)) {
+    //     if (this.equals(start)) {
             
-            newString.append(this.getName());
-        }
-        else if (this.getDepth() - start.getDepth() > 0) {
+    //         newString.append(this.getName());
+    //     }
+    //     else if (this.getDepth() - start.getDepth() > 0) {
            
-            newString.append(this.getParent().toString(start));
-            newString.append("/");
-            newString.append(this.getName());
-        }
+    //         newString.append(this.getParent().toString(start));
+    //         newString.append("/");
+    //         newString.append(this.getName());
+    //     }
 
-        return newString.toString();
-    }
+    //     return newString.toString();
+    // }
 }

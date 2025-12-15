@@ -44,10 +44,24 @@ public class FileSystemTester {
         int totalNodesRoot = root.getTotalNodeCount();
 
         Navigator n = new Navigator(tree);
-        n.processUserInputString("mkdir whatever");
-        n.processUserInputString("ls");
-        n.processUserInputString("cd whatever");
-        n.processUserInputString("depth");
+        // n.processUserInputString("mkdir whatever");
+        // n.processUserInputString("ls");
+        // n.processUserInputString("cd whatever");
+        // n.processUserInputString("depth");
+
+        System.out.println(root.toString());
+
+        FolderNode docs = (FolderNode) root.getChildByName("docs");
+
+      
+
+        n.processUserInputString("cd docs");
+
+        
+
+
+        System.out.println(docs.toString());
+
     }
 
 
