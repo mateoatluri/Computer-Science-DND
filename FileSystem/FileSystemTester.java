@@ -57,8 +57,7 @@ public class FileSystemTester {
 
         n.processUserInputString("cd docs");
 
-        
-
+    
 
         System.out.println(docs.toString());
 

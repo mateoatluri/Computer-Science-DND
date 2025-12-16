@@ -194,6 +194,29 @@ public class Navigator {
      */
     private void tree(String[] args) {
         // TODO: implement tree-style printing with indentation and branch characters
+
+        printTree(currentDirectory, 0);
+    }
+
+    private void printTree(FolderNode folder, int depth) {
+        for(FileSystemNode child : folder.getChildren()) {
+            if (depth > 0) {
+                System.out.print("|");
+            }
+            for (int i = 0; i < depth; i++) {
+                if (i == 0) {
+                    System.out.print("   ");
+                } else {
+                    System.out.print("    ");
+                }
+
+            }
+            System.out.println("|---" + child.getName());
+            if (child.isFolder() == true) {
+                FolderNode childFolder = (FolderNode) child;
+                printTree(childFolder, depth + 1);
+            }
+        }
     }
 
     /**
