@@ -21,7 +21,7 @@ public class MyBST<E extends Comparable<E>> {
 
 	// Returns true if this BST contains value; otherwise returns false.
 	public boolean contains(E value) {
-		return false;
+		return containsHelper(value, root);
 	}
 
 	public boolean containsHelper(E value, BinaryNode<E> currentPos) {
@@ -45,40 +45,71 @@ public class MyBST<E extends Comparable<E>> {
 		return false;
 	}
 
+
+	public BinaryNode<E> findNode(E value, BinaryNode<E> currentPos) {
+		// if (value.compareTo(currentPos.getValue()) == 0) {
+		// 	return currentPos;
+		// } 
+		
+		if (value.compareTo(currentPos.getValue()) > 0) {
+			if (currentPos.hasRight()) {
+				containsHelper(value, currentPos.getRight());
+			} else {
+				return null;
+			}
+		} else {
+			if (currentPos.hasLeft()) {
+				containsHelper(value, currentPos.getLeft());
+			} else {
+				return null;
+			}
+		}
+
+		return currentPos;
+	}
+
 	// Adds value to this BST, unless this tree already holds value.
 	// Returns true if value has been added; otherwise returns false.
 	public boolean add(E value) {
-		return addHelper(value, root);
-	}
-
-	public boolean addHelper(E value, BinaryNode<E> currentPos) {
 		if (root == null) {
 			root = new BinaryNode<E>(value);
 			return true;
 		}
+		
+		return addHelper(value, root);
+	}
+
+	public boolean addHelper(E value, BinaryNode<E> currentPos) {
+
 
 		if (value.compareTo(currentPos.getValue()) == 0) {
 			return false;
 		} else if (value.compareTo(currentPos.getValue()) > 0) {
 			if (currentPos.hasRight()) {
-				addHelper(value, currentPos.getRight());
+				return addHelper(value, currentPos.getRight());
 			} else {
 				BinaryNode<E> newNode = new BinaryNode<E>(value);
 				currentPos.setRight(newNode);
+				newNode.setParent(currentPos);
+				
+				//System.out.println(value);
+				
 				return true;
 			}
 		} else {
 			if (currentPos.hasLeft()) {
-				addHelper(value, currentPos.getLeft());
+				return addHelper(value, currentPos.getLeft());
 			} else {
 				BinaryNode<E> newNode = new BinaryNode<E>(value);
 				currentPos.setLeft(newNode);
+				newNode.setParent(currentPos);
+
+				//System.out.println(value);
+
 				return true;
 			}
 		}
 
-		System.out.println("This didn't work if you see this.");
-		return false;
 	}
 
 	// Removes value from this BST.  Returns true if value has been
@@ -86,7 +117,35 @@ public class MyBST<E extends Comparable<E>> {
 	// If removing a node with two children: replace it with the
 	//  largest node in the right subtree
 	public boolean remove(E value) {
-		return false;
+		if (!this.contains(value)) {
+			return false;
+		}
+
+		return removeHelper(value, findNode(value, root));
+	}
+
+	public boolean removeHelper(E value, BinaryNode<E> toRemove) {
+		if (toRemove.isLeaf()) {
+			if (toRemove.getParent().getValue().compareTo(toRemove.getValue()) > 0) {
+				toRemove.getParent().setLeft(null);
+			} else {
+				toRemove.getParent().setRight(null);
+			}
+		}
+		
+		if (toRemove.hasRight() == false) {
+			BinaryNode<E> maxLeft = maxNodeFromSpot(toRemove);
+			toRemove.setValue(maxLeft.getValue());
+
+			if (maxLeft.hasLeft()) {
+
+				maxLeft.getParent().setRight(maxLeft.getLeft());
+				maxLeft.getLeft().setParent(maxLeft.getParent()); // doesn't work... fix next time
+			}
+
+		} else {
+
+		}
 	}
 	
 	// Returns the minimum in the tree
@@ -98,6 +157,24 @@ public class MyBST<E extends Comparable<E>> {
 
 		return currentNode.getValue();
 	}
+
+	public BinaryNode<E> minNode() {
+		BinaryNode<E> currentNode = root;
+		while (currentNode.hasLeft()) {
+			currentNode = currentNode.getLeft();
+		}
+
+		return currentNode;
+	}
+
+	public BinaryNode<E> minNodeFromSpot(BinaryNode<E> currentPos) {
+		BinaryNode<E> currentNode = currentPos;
+		while (currentNode.hasLeft()) {
+			currentNode = currentNode.getLeft();
+		}
+
+		return currentNode;
+	}
 	
 	// Returns the maximum in the tree.
 	public E max() {
@@ -107,6 +184,24 @@ public class MyBST<E extends Comparable<E>> {
 		}
 
 		return currentNode.getValue();
+	}
+
+	public BinaryNode<E> maxNode() {
+		BinaryNode<E> currentNode = root;
+		while (currentNode.hasRight()) {
+			currentNode = currentNode.getRight();
+		}
+
+		return currentNode;
+	}
+
+	public BinaryNode<E> maxNodeFromSpot(BinaryNode<E> currentPos) {
+		BinaryNode<E> currentNode = currentPos;
+		while (currentNode.hasRight()) {
+			currentNode = currentNode.getRight();
+		}
+
+		return currentNode;
 	}
 
 	// Returns a bracket-surrounded, comma separated list of the contents of the nodes, in order
@@ -122,12 +217,19 @@ public class MyBST<E extends Comparable<E>> {
 
 	public StringBuilder toStringHelper(BinaryNode<E> currentPos, StringBuilder currentString) {
 		if (currentPos.getValue().compareTo(min()) == 0) {
-			currentString.append(currentPos.getValue());
+			currentString.append(currentPos.getValue() + " | Height: (" + currentPos.getHeight() + ")");
+
+			if (currentPos.hasRight()) {
+				toStringHelper(currentPos.getRight(), currentString);
+			}
+
 		} else {
 			if (currentPos.hasLeft()) {
 				toStringHelper(currentPos.getLeft(), currentString);
 			}
-			currentString.append(", " + currentPos.getValue());
+
+			
+			currentString.append(", " + currentPos.getValue() + " | Height: (" + currentPos.getHeight() + ")");
 			
 			if (currentPos.hasRight()) {
 				toStringHelper(currentPos.getRight(), currentString);
