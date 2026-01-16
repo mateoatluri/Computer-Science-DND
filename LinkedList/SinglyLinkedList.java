@@ -3,9 +3,13 @@
 import java.lang.StringBuilder;
 
 public class SinglyLinkedList<E> {
-	private ListNode<E> head;
-	private ListNode<E> tail;
-	private int nodeCount;
+	// private ListNode<E> head;
+	// private ListNode<E> tail;
+	// private int nodeCount;
+
+	public ListNode<E> head;
+	public ListNode<E> tail;
+	public int nodeCount;
 
 	// Constructor: creates an empty list
 	public SinglyLinkedList() {
