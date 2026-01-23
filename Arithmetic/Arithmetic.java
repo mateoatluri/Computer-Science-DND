@@ -1,4 +1,5 @@
 import java.lang.Math;
+import java.lang.StringBuilder;
 
 public class Arithmetic {
     
@@ -6,7 +7,8 @@ public class Arithmetic {
     // classic notation
     
     public static int evaluate(String exp) {
-        return 0;
+        String stoutExp = convertClassicToStout(exp);
+        return evaluateStout(stoutExp);
     }
 
     //Returns the result of doing operand1 operation operand2,
@@ -93,7 +95,54 @@ public class Arithmetic {
     }
 
     public static String convertClassicToStout(String exp) {
-        return "";
+        String[] newExp = exp.split(" ");
+        //String result = "";
+        StringBuilder result = new StringBuilder();
+        MyStack<String> newStack = new MyStack<String>();
+        int numPriority = 0;
+
+
+        for (int i = 0; i < newExp.length; i++) {
+            String character = newExp[i];
+            if (isOperator(character)) {
+                if (character.equals(")")) {
+                    while (!newStack.peek().equals("(")) {
+                        result.append(newStack.pop());
+                        result.append(" ");
+                    }
+                    newStack.pop();
+
+                } else if (priority(character) > numPriority || newStack.peek().equals("(")) {
+                    numPriority = priority(character);
+                    newStack.push(character);
+                } else {
+                    if (priority(character) <= numPriority) {
+                        while (!newStack.empty() && !newStack.peek().equals("(")) {
+                            result.append(newStack.pop());
+                            result.append(" ");
+                        }
+                        newStack.push(character);
+
+                        if (!newStack.empty()) {
+                            numPriority = priority(newStack.peek());
+                        }
+
+                    }
+                }
+            } else {
+                result.append(character);
+                result.append(" ");
+            }
+
+        }
+        while (!newStack.empty()) {
+            result.append(newStack.pop());
+            result.append(" ");
+        }
+        
+        String toReturn = result.toString();
+        return toReturn;
+        //return toReturn.substring(0, result.length() - 2);
     }
     
 }
