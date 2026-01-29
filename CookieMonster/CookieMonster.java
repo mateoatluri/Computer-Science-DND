@@ -47,7 +47,7 @@ public class CookieMonster {
     //You may find it VERY helpful to write this helper method.  Or not!
 	private boolean validPoint(int row, int col) {
 		//Write this if you want
-		if (cookieGrid[row][col] == -1) {
+		if (row >= numRows || row < 0 || col >= numCols || col < 0 || cookieGrid[row][col] == -1 ) {
 			return false;
 		} else {
 			return true;
@@ -99,7 +99,40 @@ public class CookieMonster {
     /* From any given position, always add the path right before adding the path down */
     public int queueCookies() {
 		ArrayDeque<OrphanScout> q = new ArrayDeque<>();
-		
+		int row = 0;
+		int col = 0;
+
+		OrphanScout firstKid = new OrphanScout(row, col, cookieGrid[0][0]);
+		//int cookieCount = firstKid.getCookiesDiscovered();
+		int newCookieCount = 0;
+		q.add(firstKid);
+
+		while (!(q.peek().getEndingRow() == numRows - 1 && q.peek().getEndingCol() == numCols - 1)) {
+			row = q.peek().getEndingRow();
+			col = q.peek().getEndingCol();
+			
+			if (validPoint(row + 1, col)) {
+				newCookieCount = q.peek().getCookiesDiscovered() + cookieGrid[row + 1][col];
+				q.add(new OrphanScout(row + 1, col, newCookieCount));
+			}	
+			
+			if (validPoint(row, col + 1)) {
+				newCookieCount = q.peek().getCookiesDiscovered() + cookieGrid[row][col + 1];
+				q.add(new OrphanScout(row, col + 1, newCookieCount));
+			}
+
+			q.remove();
+		}
+
+		int maxCookies = 0;
+		while (q.peek() != null) {
+			int currentCookies = q.remove().getCookiesDiscovered();
+			if (currentCookies > maxCookies) {
+				maxCookies = currentCookies;
+			}
+		}
+
+		return maxCookies;
 
     }
 
@@ -108,8 +141,53 @@ public class CookieMonster {
  	 * Returns the maximum number of cookies attainable. */
     /* From any given position, always add the path right before adding the path down */
     public int stackCookies() {
-		//CODE THIS
-		return 0;
+		Stack<OrphanScout> stack = new Stack<>();
+		int row = 0;
+		int col = 0;
+
+		OrphanScout firstKid = new OrphanScout(row, col, cookieGrid[0][0]);
+		//int cookieCount = firstKid.getCookiesDiscovered();
+		int rightCookieCount = 0;
+		int leftCookieCount = 0;
+		stack.push(firstKid);
+
+		while (!(stack.peek().getEndingRow() == numRows - 1 && stack.peek().getEndingCol() == numCols - 1)) {
+			row = stack.peek().getEndingRow();
+			col = stack.peek().getEndingCol();
+			OrphanScout rightKid = new OrphanScout(0, 0, 0);
+			OrphanScout downKid = new OrphanScout(0, 0, 0);
+
+			if (validPoint(row + 1, col)) {
+				rightCookieCount = stack.peek().getCookiesDiscovered() + cookieGrid[row + 1][col];
+				rightKid = new OrphanScout(row + 1, col, rightCookieCount);
+			}
+
+			if (validPoint(row, col + 1)) {
+				leftCookieCount = stack.peek().getCookiesDiscovered() + cookieGrid[row][col + 1];
+				downKid = new OrphanScout(row, col + 1, leftCookieCount);
+			}
+
+			stack.pop();
+
+			if (validPoint(row, col +1)) {
+				stack.push(downKid);
+			}
+
+			if (validPoint(row + 1, col)) {
+				stack.push(rightKid);
+			}
+		
+		}
+
+		int maxCookies = 0;
+		while (!stack.empty()) {
+			int currentCookies = stack.pop().getCookiesDiscovered();
+			if (currentCookies > maxCookies) {
+				maxCookies = currentCookies;
+			}
+		}
+
+		return maxCookies;
     }
 
 }
