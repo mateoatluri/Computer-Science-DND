@@ -57,14 +57,21 @@ public class CookieMonster {
 	/* RECURSIVELY calculates the route which grants the most cookies.
 	 * Returns the maximum number of cookies attainable. */
 	public int recursiveCookies() {
+		if (cookieGrid[0][0] == -1) {
+			return 0;
+		}
+		
 		return recursiveCookies(0,0);	
 	}	
 	
 	// Returns the maximum number of cookies edible starting from (and including) cookieGrid[row][col]
 	public int recursiveCookies(int row, int col) {
+		
 		int rightValue = -1;
 		int downValue = -1;
 		
+		
+
 		if (row == numRows - 1 && col == numCols - 1) {
 			return cookieGrid[row][col];
 		}
@@ -98,6 +105,11 @@ public class CookieMonster {
 	 * Returns the maximum number of cookies attainable. */
     /* From any given position, always add the path right before adding the path down */
     public int queueCookies() {
+		
+		if (cookieGrid[0][0] == -1) {
+			return 0;
+		}
+
 		ArrayDeque<OrphanScout> q = new ArrayDeque<>();
 		int row = 0;
 		int col = 0;
@@ -142,7 +154,9 @@ public class CookieMonster {
     /* From any given position, always add the path right before adding the path down */
     public int stackCookies() {
 		
-
+		if (cookieGrid[0][0] == -1) {
+			return 0;
+		}
 		
 		Stack<OrphanScout> stack = new Stack<>();
 		int row = 0;
