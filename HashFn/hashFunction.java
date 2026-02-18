@@ -17,11 +17,11 @@ public class hashFunction {
 
         for (int i = 0; i < newName.length(); i++) {
             int currentNum = ((int) newName.charAt(i));
-            if (!(currentNum == 32)) {
+            if (!(newName.charAt(i) == ' ')) {
                 if (i % 2 == 0) {
-                    toReturn = (toReturn * 37) + (currentNum - 97);
+                    toReturn = (toReturn * 31) + (currentNum);
                 } else if (i % 2 == 1) {
-                    toReturn = (toReturn / 39) + (currentNum - 97);
+                    toReturn = (toReturn / 31) + (currentNum);
                 }
                 
             }
