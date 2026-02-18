@@ -18,12 +18,18 @@ public class hashFunction {
         for (int i = 0; i < newName.length(); i++) {
             int currentNum = ((int) newName.charAt(i));
             if (!(newName.charAt(i) == ' ')) {
-                if (i % 2 == 0) {
+                if (i == 2) {
+                    toReturn = (toReturn * 543) - (2 * currentNum);
+                } else if (i % 6 == 0) {
+                    toReturn = (toReturn * 91) + (currentNum);
+                } else if (i % 2 == 0) {
                     toReturn = (toReturn * 31) + (currentNum);
                 } else if (i % 2 == 1) {
                     toReturn = (toReturn / 31) + (currentNum);
                 }
                 
+            } else {
+                toReturn = (toReturn * (toReturn % 18)) - (currentNum);
             }
             
         }

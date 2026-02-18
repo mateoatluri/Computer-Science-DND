@@ -70,8 +70,9 @@ public class hashFunctionTester {
         for (int j = 0; j < names.length; j++) {
             int nextIndex = hashFunction.hashFn(names[j]);
                 if (output[nextIndex] != null) {
-                System.out.println("duplicateFound for name: " + names[j] + " at index:" + nextIndex);
-        
+                    System.out.println("duplicateFound for name: " + names[j] + " at index:" + nextIndex);
+                      
+            } else {
                 output[nextIndex] = names[j];
             }
         }
@@ -82,25 +83,5 @@ public class hashFunctionTester {
 
 
         }
-
-        // int nextIndex = hashFunction.hashFn(names[i]);
-        //         if (output[nextIndex] != null) {
-        //         System.out.println("duplicateFound for name: " + names[i] + " at index:" + nextIndex);
-        
-        //         output[nextIndex] = names[i];
-        //     }
-
-        
-
-        // for (int i = 0; i < names.length; i++) {
-        //     int nextIndex = hashFunction.hashFn(names[0]);
-
-        //     if (names[nextIndex] != null) {
-        //         System.out.println("duplicateFound for name: " + names[i] + " at index:" + nextIndex);
-        //         }
-
-        //         System.out.println(hashFunction.hashFn(names[i]));
-            
-        // }
     }
 }
