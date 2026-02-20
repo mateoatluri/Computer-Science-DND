@@ -51,27 +51,59 @@ public class ChocolateHashMap<K, V> {
     // NOTE: Math.abs(Integer.MIN_VALUE) is still negative. Consider masking the sign bit.
     private int whichBucket(K key) {
         // TODO: implement
-        throw new UnsupportedOperationException("TODO: implement whichBucket");
+
+        int place = key.hashCode();
+        return Math.abs(place % buckets.length);
+
+        //throw new UnsupportedOperationException("TODO: implement whichBucket");
     }
 
     // Returns the current load factor (objCount / buckets)
     public double currentLoadFactor() {
         // TODO: implement
-        throw new UnsupportedOperationException("TODO: implement currentLoadFactor");
+
+        return objectCount / buckets.length;
+        //throw new UnsupportedOperationException("TODO: implement currentLoadFactor");
     }
 
     // Return true if the key exists as a key in the map, otherwise false.
     // Use the .equals method to check equality.
     public boolean containsKey(K key) {
+
+        int place = whichBucket(key);
+
+        if (buckets[place].getNext().isSentinel() && buckets[place].getPrevious().isSentinel()) {
+            return false;
+        } else {
+            return true;
+        }
+
         // TODO: implement
-        throw new UnsupportedOperationException("TODO: implement containsKey");
+        //throw new UnsupportedOperationException("TODO: implement containsKey");
     }
 
     // Return true if the value exists as a value in the map, otherwise false.
     // Use the .equals method to check equality.
     public boolean containsValue(V value) {
         // TODO: implement
-        throw new UnsupportedOperationException("TODO: implement containsValue");
+
+        for (int i = 0; i < buckets.length; i++) {
+            if (!(buckets[i].getNext().isSentinel() && buckets[i].getPrevious().isSentinel())) {
+                for (BatchNode j = buckets[i].getNext(); j != buckets[i]; j = j.getNext()) {
+                    if (value == null && j.getEntry() == null) {
+                        return true;
+                    } else if (value != null) {
+                        if (j.getEntry().equals(value)) {
+                            return true;
+                        }
+                    }
+                }
+            } 
+        }
+
+        return false;
+
+        //throw new UnsupportedOperationException("TODO: implement containsValue");
     }
 
     // Puts a key-value pair into the map.
@@ -82,7 +114,30 @@ public class ChocolateHashMap<K, V> {
     // - If so, you must call rehash with double the current bucket size.
     public boolean put(K key, V value) {
         // TODO: implement
-        throw new UnsupportedOperationException("TODO: implement put");
+
+
+        BatchNode<ChocolateEntry<K, V>> newBatch = new BatchNode<ChocolateEntry<K, V>>();
+        //make sure to instantiate the key and value... shouldn't be a chcolate entry
+
+        //BatchNode newNode = new BatchNode<>(ChocolateBatch);
+        int index = whichBucket(key);
+
+        if (containsKey(key)) {
+
+            //must fix this to have an IF that checks if the key exists already.
+            
+            newNode.setPrevious(buckets[index].getPrevious());
+
+            buckets[index].getPrevious().setNext(newNode);
+
+            buckets[index].setPrevious(newNode);
+
+            newNode.setNext(buckets[index]);
+
+            return true;
+        }
+
+        //throw new UnsupportedOperationException("TODO: implement put");
     }
 
     // Returns the value associated with the key in the map.
