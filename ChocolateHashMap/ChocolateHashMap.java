@@ -6,6 +6,9 @@
  *
  * You are responsible for implementing the methods marked TODO.
  */
+
+import java.lang.StringBuilder;
+
 public class ChocolateHashMap<K, V> {
     private BatchNode<ChocolateEntry<K, V>>[] buckets;
     private int objectCount;
@@ -62,7 +65,7 @@ public class ChocolateHashMap<K, V> {
     public double currentLoadFactor() {
         // TODO: implement
 
-        return objectCount / buckets.length;
+        return  ((double) objectCount) / ((double) buckets.length);
         //throw new UnsupportedOperationException("TODO: implement currentLoadFactor");
     }
 
@@ -72,11 +75,29 @@ public class ChocolateHashMap<K, V> {
 
         int place = whichBucket(key);
 
-        if (buckets[place].getNext().isSentinel() && buckets[place].getPrevious().isSentinel()) {
+        if (buckets[place].getNext().isSentinel()) {
             return false;
         } else {
-            return true;
+            
+            for (BatchNode i = buckets[place].getNext(); !i.equals(buckets[place]); i = i.getNext()) {
+                if (key.equals(((ChocolateEntry) i.getEntry()).getKey())) {
+                    return true;
+                }
+            }
         }
+        return false;
+
+        
+
+        // if (buckets[place].getNext().isSentinel() && buckets[place].getPrevious().isSentinel()) {
+
+        //     if (buckets[place].getEntry().getKey().equals(key)) {
+
+        //     }
+            
+        // } else {
+        //     return true;
+        // }
 
         // TODO: implement
         //throw new UnsupportedOperationException("TODO: implement containsKey");
@@ -89,7 +110,7 @@ public class ChocolateHashMap<K, V> {
 
         for (int i = 0; i < buckets.length; i++) {
             if (!(buckets[i].getNext().isSentinel() && buckets[i].getPrevious().isSentinel())) {
-                for (BatchNode j = buckets[i].getNext(); j != buckets[i]; j = j.getNext()) {
+                for (BatchNode j = buckets[i].getNext(); !j.equals(buckets[i]); j = j.getNext()) {
                     if (value == null && j.getEntry() == null) {
                         return true;
                     } else if (value != null) {
@@ -116,26 +137,56 @@ public class ChocolateHashMap<K, V> {
         // TODO: implement
 
 
-        BatchNode<ChocolateEntry<K, V>> newBatch = new BatchNode<ChocolateEntry<K, V>>();
-        //make sure to instantiate the key and value... shouldn't be a chcolate entry
-
-        //BatchNode newNode = new BatchNode<>(ChocolateBatch);
+        ChocolateEntry<K, V> newEntry = new ChocolateEntry<K,V>(key, value);
+        BatchNode<ChocolateEntry<K, V>> newNode = new BatchNode<ChocolateEntry<K, V>>(newEntry);
         int index = whichBucket(key);
 
+        if (index > buckets.length || index < 0) {
+            return false;
+        }
+ 
         if (containsKey(key)) {
-
-            //must fix this to have an IF that checks if the key exists already.
-            
+            return false;
+        } else if (!buckets[index].getNext().isSentinel()) {
             newNode.setPrevious(buckets[index].getPrevious());
-
             buckets[index].getPrevious().setNext(newNode);
 
             buckets[index].setPrevious(newNode);
-
             newNode.setNext(buckets[index]);
-
-            return true;
+        } else {
+            newNode.setPrevious(buckets[index]);
+            newNode.setNext(buckets[index]);
+            buckets[index].setNext(newNode);
+            buckets[index].setPrevious(newNode);
         }
+
+        objectCount++;
+
+        if (currentLoadFactor() > loadFactorLimit) {
+            rehash(buckets.length * 2);
+        }
+
+        return true;
+
+
+
+        //BatchNode newNode = new BatchNode<>(ChocolateBatch);
+        // int index = whichBucket(key);
+
+        // if (containsKey(key)) {
+
+        //     //must fix this to have an IF that checks if the key exists already.
+            
+        //     newNode.setPrevious(buckets[index].getPrevious());
+
+        //     buckets[index].getPrevious().setNext(newNode);
+
+        //     buckets[index].setPrevious(newNode);
+
+        //     newNode.setNext(buckets[index]);
+
+        //     return true;
+        // }
 
         //throw new UnsupportedOperationException("TODO: implement put");
     }
@@ -144,14 +195,53 @@ public class ChocolateHashMap<K, V> {
     // If the key is not in the map, then return null.
     public V get(K key) {
         // TODO: implement
-        throw new UnsupportedOperationException("TODO: implement get");
+
+        int index = whichBucket(key);
+
+        if (containsKey(key) == false) {
+            throw new UnsupportedOperationException();
+        }
+        
+        for (BatchNode i = buckets[index].getNext(); !i.equals(buckets[index]); i = i.getNext()) {
+            if (key.equals(((ChocolateEntry) i.getEntry()).getKey())) {
+                return (V) ((ChocolateEntry) i.getEntry()).getValue();
+            }
+        }
+
+
+        System.out.println("If you see this, it's not working");
+        return null;
+        
+
+
+
     }
 
     // Remove the pair associated with the key.
     // Return true if successful, false if the key did not exist.
+    @SuppressWarnings("unchecked")
     public boolean remove(K key) {
         // TODO: implement
-        throw new UnsupportedOperationException("TODO: implement remove");
+
+        if (containsKey(key) == false) {
+            return false;
+        }
+        int index = whichBucket(key);
+
+        
+        for (BatchNode i = buckets[index].getNext(); !i.equals(buckets[index]); i = i.getNext()) {
+            K newKey = (K) ((ChocolateEntry) i.getEntry()).getKey();
+            if (key.equals(newKey)) {
+                
+                i.getPrevious().setNext(i.getNext());
+                i.getNext().setPrevious(i.getPrevious());
+
+                return true;
+            }
+        }
+
+        System.out.println("If you see this, it is not working");
+        return false;
     }
 
     // Rehash the map so that it contains the given number of buckets
@@ -159,9 +249,25 @@ public class ChocolateHashMap<K, V> {
     // Rehash each object into the new bucket array in the order they appear on the original chain.
     // I.e. if a bucket originally has (sentinel)->J->Z->K, then J will be rehashed first,
     // followed by Z, then K.
+    @SuppressWarnings("unchecked")
     public void rehash(int newBucketCount) {
         // TODO: implement
-        throw new UnsupportedOperationException("TODO: implement rehash");
+
+
+        BatchNode<ChocolateEntry<K, V>>[] oldBuckets = buckets;
+
+        buckets = (BatchNode<ChocolateEntry<K, V>>[]) new BatchNode[newBucketCount];
+        fillArrayWithSentinels(buckets);
+
+        
+        for (int i = 0; i < oldBuckets.length; i++) {
+            for (BatchNode j = oldBuckets[i].getNext(); !j.equals(oldBuckets[i]); j = j.getNext()) {
+                K key = (K) ((ChocolateEntry) j.getEntry()).getKey();
+                V value = (V) ((ChocolateEntry) j.getEntry()).getValue();
+                put(key, value);
+            }
+        }
+
     }
 
     // The output should be in the following format:
@@ -173,8 +279,32 @@ public class ChocolateHashMap<K, V> {
     // Example (using chocolate-themed data):
     // [ 3, 10 | { b3: LOT-70,DARK LOT-12,MILK } { b7: LOT-99,WHITE } ]
     @Override
+    @SuppressWarnings("unchecked")
     public String toString() {
         // TODO: implement
-        throw new UnsupportedOperationException("TODO: implement toString");
+        
+        StringBuilder newString = new StringBuilder("[ " + objectCount + ", " + buckets.length + " | ");
+
+        for (int i = 0; i < buckets.length; i++) {
+            if (!buckets[i].getNext().isSentinel()) {
+                
+                newString.append("{ b" + i + ": ");
+
+                
+                for (BatchNode j = buckets[i].getNext(); !j.equals(buckets[i]); j = j.getNext()) {
+                    K key = (K) ((ChocolateEntry) j.getEntry()).getKey();
+                    V value = (V) ((ChocolateEntry) j.getEntry()).getValue();
+                    newString.append(key + "," + value + " ");
+                }
+                newString.append("} ");
+            }
+        }
+
+        newString.append("]");
+
+        String finalStr = newString.toString();
+
+        return finalStr;
+
     }
 }
