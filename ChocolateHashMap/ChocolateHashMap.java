@@ -111,10 +111,10 @@ public class ChocolateHashMap<K, V> {
         for (int i = 0; i < buckets.length; i++) {
             if (!(buckets[i].getNext().isSentinel() && buckets[i].getPrevious().isSentinel())) {
                 for (BatchNode j = buckets[i].getNext(); !j.equals(buckets[i]); j = j.getNext()) {
-                    if (value == null && j.getEntry() == null) {
+                    if (value == null && ((ChocolateEntry) j.getEntry()).getValue() == null) {
                         return true;
-                    } else if (value != null) {
-                        if (j.getEntry().equals(value)) {
+                    } else if (!(value == null) || ((ChocolateEntry) j.getEntry()).getValue() == null) {
+                        if (((ChocolateEntry) j.getEntry()).getValue().equals(value)) {
                             return true;
                         }
                     }
@@ -165,7 +165,6 @@ public class ChocolateHashMap<K, V> {
         if (currentLoadFactor() > loadFactorLimit) {
             rehash(buckets.length * 2);
         }
-
         return true;
 
 
@@ -196,11 +195,13 @@ public class ChocolateHashMap<K, V> {
     public V get(K key) {
         // TODO: implement
 
-        int index = whichBucket(key);
+        
 
         if (containsKey(key) == false) {
-            throw new UnsupportedOperationException();
+            return null;
         }
+
+        int index = whichBucket(key);
         
         for (BatchNode i = buckets[index].getNext(); !i.equals(buckets[index]); i = i.getNext()) {
             if (key.equals(((ChocolateEntry) i.getEntry()).getKey())) {
@@ -236,6 +237,7 @@ public class ChocolateHashMap<K, V> {
                 i.getPrevious().setNext(i.getNext());
                 i.getNext().setPrevious(i.getPrevious());
 
+                objectCount--;
                 return true;
             }
         }
@@ -258,7 +260,7 @@ public class ChocolateHashMap<K, V> {
 
         buckets = (BatchNode<ChocolateEntry<K, V>>[]) new BatchNode[newBucketCount];
         fillArrayWithSentinels(buckets);
-
+        objectCount = 0;
         
         for (int i = 0; i < oldBuckets.length; i++) {
             for (BatchNode j = oldBuckets[i].getNext(); !j.equals(oldBuckets[i]); j = j.getNext()) {
