@@ -222,7 +222,7 @@ public class ChocolateHashMap<K, V> {
     // Return true if successful, false if the key did not exist.
     @SuppressWarnings("unchecked")
     public boolean remove(K key) {
-        // TODO: implement
+        // TODO: implement 
 
         if (containsKey(key) == false) {
             return false;
@@ -250,7 +250,7 @@ public class ChocolateHashMap<K, V> {
     // Loop through all existing buckets, from 0 to length
     // Rehash each object into the new bucket array in the order they appear on the original chain.
     // I.e. if a bucket originally has (sentinel)->J->Z->K, then J will be rehashed first,
-    // followed by Z, then K.
+    // followed by Z, then K. 
     @SuppressWarnings("unchecked")
     public void rehash(int newBucketCount) {
         // TODO: implement
