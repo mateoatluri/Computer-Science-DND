@@ -1,8 +1,8 @@
 ChatGPT, Xander
 ChatGPT, Jackson
 ChatGPT, Evan
-ChatGPT, Mr. Theiss
-Mr. Theiss, Netanyahu
+ChatGPT, MrTheiss
+MrTheiss, Netanyahu
 MrTheiss, MrStout
 MrTheiss, MrLopez
 MrTheiss, Yari
@@ -84,7 +84,7 @@ Xander, Evan
 Xander, Mateo
 Xander, MrTheiss
 Xander, ChatGPT
-Xander, The Big Yahu
+Xander, Netanyahu
 Evan, Waller
 Evan, Xander
 Evan, James
@@ -93,9 +93,8 @@ Evan, ChatGPT
 Camille, Morgan
 Camille, Felicia
 Camille, Siona
-Camille, Matin
+Camille, Mattin
 Jackson, Mateo
 Jackson, Felicia
 Jackson, David
-Jackson, Pet
 Jackson, Jackson
