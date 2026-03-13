@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.io.Reader;
 import java.lang.StringBuilder;
+import java.util.Map;
+import java.util.Set;
+
 
 public class MiniGPT {
 
@@ -15,8 +18,8 @@ public class MiniGPT {
 
 	public MiniGPT(String fileName, int chainOrder) {
 		
-		try (BufferedReader reader = new BufferedReader(new FileReader("sample.txt"))) {
-            
+		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            map = new HashMap<String, ArrayList<Character>>();
 			
 			int charAsInt;
 			int index = 0;
@@ -35,7 +38,7 @@ public class MiniGPT {
 
 
 
-			for (int i = 0; i < chars.size(); i++) {
+			for (int i = 0; i <= chars.size() - chainOrder - 1; i++) {
 				StringBuilder newString = new StringBuilder();
 				
 				for (int j = 0; j < chainOrder; j++) {
@@ -61,58 +64,38 @@ public class MiniGPT {
 	}
 
 	
-	public static HashMap<String, ArrayList<String>> readData(String filePath) {
-        
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+	
 
-            String line;
-            ArrayList<String[]> newString = new ArrayList<String[]>();
-            
-            while ((line = br.readLine()) != null) {
-                newString.add(line.split(","));
-            }
+    
 
-            HashMap<String, ArrayList<String>> map = new HashMap<String, ArrayList<String>>();
-
-            for (int i = 0; i < newString.size(); i++) {
-                String currentDay = newString.get(i)[0];
-                String nextDay = newString.get(i)[1];
-                    if (map.containsKey(currentDay)) {
-                        map.get(currentDay).add(nextDay);
-                    } else {
-                        ArrayList<String> list = new ArrayList<String>();
-                        list.add(nextDay);
-                        map.put(currentDay, list);
-                    }
-                
-            }
-
-            return map;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-	public static void readFile(String[] args) {
-        // Example: Reading from a file. You could also use InputStreamReader 
-        // for console input.
-        try (BufferedReader reader = new BufferedReader(new FileReader("sample.txt"))) {
-            int charAsInt;
-            // Read until the end of the stream (-1 is returned)
-            while ((charAsInt = reader.read()) != -1) {
-                // Cast the integer value to a character
-                char character = (char) charAsInt;
-                System.out.print(character);
-            }
-        } catch (IOException e) {
-            System.err.println("An I/O error occurred: " + e.getMessage());
-        }
-    }
+	
 
 	
 	public void generateText(String outputFileName, int numChars) {
 		
+        
+        MiniGPT newGPT = new MiniGPT(outputFileName, 6);
+		
+		String[] keys = newGPT.map.keySet().toArray(new String[0]);
+		//String currKey = newGPT.map.keySet().toArray();
+        //Set<String> keys =  newGPT.map.keySet();
+
+        StringBuilder curr = new StringBuilder();
+        curr.append(keys[0]);
+
+        System.out.print(curr.toString());
+        
+        for (int i = 0; i < numChars; i++) {
+			String currString = curr.toString();
+            int index = (int) (Math.random() * newGPT.map.get(currString).size());
+
+            char nextChar = newGPT.map.get(currString).get(index);
+            System.out.print(nextChar);
+
+            curr.deleteCharAt(0);
+            curr.append(nextChar);
+            
+        }
+
 	}
 }
