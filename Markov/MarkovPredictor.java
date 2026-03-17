@@ -34,7 +34,6 @@ public class MarkovPredictor {
                         list.add(nextDay);
                         map.put(currentDay, list);
                     }
-                
             }
 
             return map;
