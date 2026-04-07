@@ -30,9 +30,18 @@ public class RLECompression {
 
         while (br.ready()) {
             char c = (char) br.read();
-            // TO-DO
-            // Now here: do things with the char you just read, dependent on the char you
-            // just read
+            
+            if (previousChar == c) {
+                count++;
+            } else {
+                if (count == 1) {
+                    pw.write(previousChar);
+                } else {
+                    pw.write(previousChar + previousChar + count);
+                    count = 1;
+                }
+            }
+            previousChar = c;
         }
 
         br.close();
@@ -40,6 +49,8 @@ public class RLECompression {
     }
 
     // Decodes the above scheme
+    // AA4BB2
+    // AAAABB
     public static void decode(String fileName) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(fileName));
         PrintWriter pw = new PrintWriter(fileName.substring(0, fileName.length() - 4));
@@ -48,13 +59,27 @@ public class RLECompression {
 
         while (br.ready()) {
             char c = (char) br.read();
-            // TO-DO
-            // Now here: do things with the char you just read, dependent on the char you
-            // just read
+            
+            if ((!isNumber(c) && !isNumber(previousChar)) && previousChar != c) {
+                pw.write(previousChar);
+            } else if ((isNumber(c) && !isNumber(previousChar))) {
+                for (int i = 0; i < (((int) c) - 48); i++) {
+                    pw.write(previousChar);
+                }
+            }
+            previousChar = c;
         }
 
         br.close();
         pw.close();
+    }
+
+    public static boolean isNumber(char c) {
+        if (c < 48 || c > 57) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public static void bwTransform(String fileName) throws IOException {
