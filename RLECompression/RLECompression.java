@@ -3,6 +3,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class RLECompression {
 
@@ -97,12 +99,52 @@ public class RLECompression {
 
         String[] rotations = new String[originalText.length()];
         rotations[0] = originalText.toString();
+        String toLookAt = rotations[0];
+        
+        for (int i = 1; i < originalText.length(); i++) {
+
+            StringBuilder toAdd = new StringBuilder(toLookAt.charAt(toLookAt.length() - 1) + toLookAt.substring(0, toLookAt.length() - 1));
+            toLookAt = toAdd.toString();
+
+            rotations[i] = toAdd.toString();
+        }
+
+
+        rotations = alphabetize(rotations);
+
+        StringBuilder finalAnswer = new StringBuilder();
+
+        for (int i = 0; i < rotations.length; i++) {
+            finalAnswer.append(rotations[i].substring(rotations.length - 1));
+        }
+
+
         // TO-DO
         // Now do the Burrows-Wheeler Transform
 
         // And then write the transformation into a file
         PrintWriter pw = new PrintWriter(fileName + ".bw");
+        pw.write(finalAnswer.toString());
         pw.close();
+
+    }
+
+    public static String[] alphabetize(String[] rotations) {
+        ArrayList<String> rotationsArray = new ArrayList<String>(rotations.length);
+
+        for (int i = 0; i < rotations.length; i++) {
+            rotationsArray.add(rotations[i]);
+        }
+
+        Collections.sort(rotationsArray);
+
+        String[] newRotations = new String[rotations.length];
+
+        for (int i = 0; i < rotations.length; i++) {
+            newRotations[i] = rotationsArray.get(i);
+        }
+
+        return newRotations;
     }
 
     public static void invertBWTransform(String fileName) throws IOException {
@@ -128,4 +170,5 @@ public class RLECompression {
         PrintWriter pw = new PrintWriter(fileName.substring(0, fileName.length() - 3));
         pw.close();
     }
+
 }
