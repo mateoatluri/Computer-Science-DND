@@ -48,7 +48,15 @@ public class RLECompression {
             }
             previousChar = c;
         }
-
+        if (count == 1) {
+            pw.write(previousChar);
+        } else {
+            pw.write(previousChar);
+            pw.write(previousChar);
+            pw.write((char) count + '0');
+            
+            count = 1;
+        }
 
         br.close();
         pw.close();
@@ -74,6 +82,10 @@ public class RLECompression {
                 }
             }
             previousChar = c;
+        }
+
+        if (!isNumber(previousChar)) {
+            pw.write(previousChar);
         }
 
         br.close();
