@@ -39,12 +39,16 @@ public class RLECompression {
                 if (count == 1) {
                     pw.write(previousChar);
                 } else {
-                    pw.write(previousChar + previousChar + count);
+                    pw.write(previousChar);
+                    pw.write(previousChar);
+                    pw.write((char) count + '0');
+                    
                     count = 1;
                 }
             }
             previousChar = c;
         }
+
 
         br.close();
         pw.close();
@@ -98,10 +102,12 @@ public class RLECompression {
         br.close();
 
         String[] rotations = new String[originalText.length()];
-        rotations[0] = originalText.toString();
-        String toLookAt = rotations[0];
+        /////look at this above
+        //rotations[0] = originalText.toString();
+        //String toLookAt = rotations[0];
+        String toLookAt = originalText.toString();
         
-        for (int i = 1; i < originalText.length(); i++) {
+        for (int i = 0; i < originalText.length(); i++) {
 
             StringBuilder toAdd = new StringBuilder(toLookAt.charAt(toLookAt.length() - 1) + toLookAt.substring(0, toLookAt.length() - 1));
             toLookAt = toAdd.toString();
@@ -134,6 +140,7 @@ public class RLECompression {
 
         for (int i = 0; i < rotations.length; i++) {
             rotationsArray.add(rotations[i]);
+            System.out.println(rotationsArray.get(i));
         }
 
         Collections.sort(rotationsArray);
@@ -142,8 +149,10 @@ public class RLECompression {
 
         for (int i = 0; i < rotations.length; i++) {
             newRotations[i] = rotationsArray.get(i);
+            //System.out.println(newRotations[i]);
         }
 
+        
         return newRotations;
     }
 
@@ -165,9 +174,35 @@ public class RLECompression {
         // TO-DO
         // Now undo the Burrows-Wheeler transform
 
+        for (int j = 0; j < reconstructions.length; j++) {
+            
+            ArrayList<String> newRotationsArray = new ArrayList<String>(originalText.length());
+
+            for (int i = 0; i < originalText.length(); i++) {
+                newRotationsArray.add(reconstructions[i].toString());
+            }
+
+            Collections.sort(newRotationsArray);
+
+            for (int i = 0; i < originalText.length(); i++) {
+                String toChange = newRotationsArray.get(i);
+                String toAdd = reconstructions[i].toString();
+                String finalToAdd = toAdd + toChange;
+                newRotationsArray.set(i, finalToAdd);
+            }
+
+            for (int i = 0; i < originalText.length(); i++) {
+                StringBuilder stringToAdd = new StringBuilder(newRotationsArray.get(i));
+                reconstructions[i] = stringToAdd;
+            }
+        }
+
+        
+
         // TO-DO
         // And write the appropriate reconstruction into the file, without the null char
         PrintWriter pw = new PrintWriter(fileName.substring(0, fileName.length() - 3));
+        pw.write(reconstructions[0].toString());
         pw.close();
     }
 
