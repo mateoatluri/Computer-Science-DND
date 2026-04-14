@@ -14,9 +14,13 @@ public class RLECompressionTester {
 
             //RLECompression.compress("words.txt");
 
-            //RLECompression.invertBWTransform("words.txt.bw.rle");
-
             RLECompression.decompress("words.txt.bw.rle");
+
+            //RLECompression.compress("words.txt");
+
+            //RLECompression.invertBWTransform("words.txt.bw");
+
+            //RLECompression.decompress("words.txt.bw.rle");
 
         } catch (Exception e) {
 

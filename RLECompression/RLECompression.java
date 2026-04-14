@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -180,13 +179,14 @@ public class RLECompression {
         br.close();
 
         StringBuilder[] reconstructions = new StringBuilder[originalText.length()];
+
         for (int i = 0; i < reconstructions.length; i++) {
             reconstructions[i] = new StringBuilder("" + originalText.charAt(i));
         }
         // TO-DO
         // Now undo the Burrows-Wheeler transform
 
-        for (int j = 0; j < reconstructions.length; j++) {
+        for (int j = 0; j < reconstructions.length - 1; j++) {
             
             ArrayList<String> newRotationsArray = new ArrayList<String>(originalText.length());
 
@@ -198,7 +198,7 @@ public class RLECompression {
 
             for (int i = 0; i < originalText.length(); i++) {
                 String toChange = newRotationsArray.get(i);
-                String toAdd = reconstructions[i].toString();
+                String toAdd = "" + originalText.charAt(i);
                 String finalToAdd = toAdd + toChange;
                 newRotationsArray.set(i, finalToAdd);
             }
@@ -209,12 +209,24 @@ public class RLECompression {
             }
         }
 
+
+        ArrayList<String> finalMessage = new ArrayList<String>(originalText.length());
+        for (int i = 0; i < originalText.length(); i++) {
+            finalMessage.add(reconstructions[i].toString());
+            //System.out.println("hello");
+        }
+
+        
+        Collections.sort(finalMessage);
+
         
 
         // TO-DO
         // And write the appropriate reconstruction into the file, without the null char
         PrintWriter pw = new PrintWriter(fileName.substring(0, fileName.length() - 3));
-        pw.write(reconstructions[0].toString());
+        String wordToPrint = finalMessage.get(0);
+        pw.write(wordToPrint.substring(1));
+        //System.out.println(wordToPrint.substring(1));
         pw.close();
     }
 
