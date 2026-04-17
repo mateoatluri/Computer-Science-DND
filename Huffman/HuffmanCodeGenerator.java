@@ -12,6 +12,7 @@ public class HuffmanCodeGenerator {
     private HashMap<Character, Integer> frequencies;
 
     public HuffmanCodeGenerator(String frequencyFile) {
+        frequencies = new HashMap<Character, Integer>();
         getFrequencies(frequencyFile);
     }
 
@@ -28,7 +29,11 @@ public class HuffmanCodeGenerator {
                 // Cast the integer value to a character
                 char character = (char) charAsInt;
                 //System.out.print(character);
-                int value = frequencies.get(character);
+                int value = 0;
+                if (frequencies.get(character) != null) {
+                    value = (int) frequencies.get(character);
+                }
+                //value = (int) frequencies.get(character);
 				frequencies.put(character, value + 1);
 
             }
@@ -42,6 +47,10 @@ public class HuffmanCodeGenerator {
     }
 
     public int getFrequency(char c) {
+
+        if (frequencies.get(c) == null) {
+            return 0;
+        }
         return frequencies.get(c);
     }
 
