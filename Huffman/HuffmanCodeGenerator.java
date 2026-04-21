@@ -2,7 +2,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 
 
@@ -54,6 +56,44 @@ public class HuffmanCodeGenerator {
         return frequencies.get(c);
     }
 
-    
-    
+    public void createTree() {
+
+        ArrayList<FrequencyNode> sortedArray = frequencySort(frequencies);
+
+        while (sortedArray.size() > 1) {
+            int last = sortedArray.size() - 1;
+            int almostLast = sortedArray.size() - 2;
+            int parentFreq = sortedArray.get(last).getFreq() + sortedArray.get(almostLast).getFreq();
+
+            FrequencyNode parent = new FrequencyNode(parentFreq);
+            parent.setChild1(sortedArray.get(last));
+            parent.setChild2(sortedArray.get(almostLast));
+
+            sortedArray.get(last).setParent(parent);
+            sortedArray.get(almostLast).setParent(parent);
+
+            sortedArray.remove(last);
+            sortedArray.remove(almostLast);
+            sortedArray.add(parent);
+
+            Collections.sort(sortedArray);
+
+        }
+
+    }
+
+    @SuppressWarnings("unchecked")
+    public ArrayList<FrequencyNode> frequencySort(HashMap<Character, Integer> freq) {
+
+        ArrayList<FrequencyNode> freqArray = new ArrayList<>(freq.size());
+
+        for (Map.Entry<Character, Integer> entry : freq.entrySet()) {
+            freqArray.add(new FrequencyNode(entry.getKey(), entry.getValue()));
+        }
+
+        Collections.sort(freqArray);
+        
+        return freqArray;
+    }
+
 }
