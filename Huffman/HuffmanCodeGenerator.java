@@ -80,6 +80,8 @@ public class HuffmanCodeGenerator {
 
         }
 
+        //add the root node next
+
     }
 
     @SuppressWarnings("unchecked")
