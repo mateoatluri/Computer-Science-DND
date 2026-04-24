@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,6 +19,8 @@ public class HuffmanCodeGenerator {
         frequencies = new HashMap<Character, Integer>();
         getFrequencies(frequencyFile);
         root = createTree();
+        assignBinary(root);
+        makeCodeFile(frequencyFile);
     }
     
 
@@ -102,7 +105,10 @@ public class HuffmanCodeGenerator {
 
             FrequencyNode parent = new FrequencyNode(parentFreq);
             parent.setChild1(sortedArray.get(last));
+            
+
             parent.setChild2(sortedArray.get(almostLast));
+            
 
             sortedArray.get(last).setParent(parent);
             sortedArray.get(almostLast).setParent(parent);
@@ -135,6 +141,94 @@ public class HuffmanCodeGenerator {
         Collections.sort(freqArray);
         
         return freqArray;
+    }
+
+    public void assignBinary(FrequencyNode node) {
+
+        String currentNode = node.getBinary();
+
+        if (node.getChild1() != null) {
+            node.getChild1().setBinary(currentNode + "0");
+            assignBinary(node.getChild1());
+        }
+
+        if (node.getChild2() != null) {
+            node.getChild2().setBinary(currentNode + "1");
+            assignBinary(node.getChild2());
+        }
+
+    }
+
+    public String getCode(char c) {
+        
+        FrequencyNode node = getNodeWithValue(root, c);
+        if (node != null) {
+            return node.getBinary();
+        } else {
+            return "";
+        }
+    }
+
+    public FrequencyNode getNodeWithValue(FrequencyNode node, char c) {
+        if (c == (char) 0) {
+            return null;
+        }
+        
+        if (node.getValue() == c) {
+            return node;
+        } else {
+            if (node.getChild1() != null) {
+                FrequencyNode leftChild = getNodeWithValue(node.getChild1(), c);
+                if (leftChild != null) {
+                    return leftChild;
+                }
+
+            }
+
+            if (node.getChild2() != null) {
+                FrequencyNode rightChild = getNodeWithValue(node.getChild2(), c);
+                if (rightChild != null) {
+                    return rightChild;
+                }        
+            }
+        return null;
+        }
+
+    }
+
+    public void makeCodeFile(String codeFile) {
+
+        try {
+
+            BufferedReader br = new BufferedReader(new FileReader(codeFile));
+            PrintWriter pw = new PrintWriter(codeFile + ".huff");
+    
+            StringBuilder toReturn = new StringBuilder();
+    
+            char currentChar = (char) br.read();
+            //int count = 1;
+    
+            while (br.ready()) {
+                currentChar = (char) br.read();
+                String toAdd = getCode(currentChar);
+                
+                toReturn.append(toAdd);
+    
+            }
+    
+            br.close();
+    
+            pw.write(toReturn.toString());
+    
+            pw.close();
+        } catch (Exception e) {
+            System.out.println("Uh oh.");
+        }
+
+
+
+        
+
     }
 
 }

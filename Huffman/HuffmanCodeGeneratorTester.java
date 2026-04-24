@@ -19,6 +19,10 @@ public class HuffmanCodeGeneratorTester {
 
         HuffmanCodeGeneratorTester.treePrinter(newThing.getRoot(), 0);
 
+        //System.out.println(newThing.getCode('G'));
+
+        
+
     }
 
     public static void treePrinter(FrequencyNode node, int givenDepth) {
@@ -30,9 +34,8 @@ public class HuffmanCodeGeneratorTester {
         for (int i = 0; i < givenDepth; i++) {
             System.out.print("    ");
         }
-        System.out.print("{" + root + "}" + " | Freq: " + rootFreq);
+        System.out.println("{" + root + "}" + " | Freq: " + rootFreq + " | Binary: " + node.getBinary());
 
-        System.out.println("");
 
         if (node.getChild1() != null) {
             treePrinter(node.getChild1(), givenDepth + 1);
