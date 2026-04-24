@@ -7,14 +7,14 @@ import java.lang.Comparable;
 
 public class FrequencyNode implements Comparable {
     
-    private Character value;
+    private char value;
     private int freq;
     private FrequencyNode parent;
     private FrequencyNode child1;
     private FrequencyNode child2;
     private int binary;
 
-    public FrequencyNode(Character givenValue, int givenFreq) {
+    public FrequencyNode(char givenValue, int givenFreq) {
         this.value = givenValue;
         this.freq = givenFreq;
         this.parent = null;
@@ -24,7 +24,7 @@ public class FrequencyNode implements Comparable {
     }
 
     public FrequencyNode(int givenFreq) {
-        this.value = null;
+        this.value = (char) 0;
         this.freq = givenFreq;
         this.parent = null;
         this.child1 = null;

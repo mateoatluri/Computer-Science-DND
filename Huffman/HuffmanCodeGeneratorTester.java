@@ -1,3 +1,11 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class HuffmanCodeGeneratorTester {
     
     public static void main(String[] args) {
@@ -7,7 +15,32 @@ public class HuffmanCodeGeneratorTester {
 
         //System.out.println(newThing.getFrequency('A'));
 
+        //System.out.println(HuffmanCodeGeneratorTester.treePrinter(newThing.getRoot()));
+
+        HuffmanCodeGeneratorTester.treePrinter(newThing.getRoot(), 0);
+
+    }
+
+    public static void treePrinter(FrequencyNode node, int givenDepth) {
+
+        char root = node.getValue();
         
+        int rootFreq = node.getFreq();
+
+        for (int i = 0; i < givenDepth; i++) {
+            System.out.print("    ");
+        }
+        System.out.print("{" + root + "}" + " | Freq: " + rootFreq);
+
+        System.out.println("");
+
+        if (node.getChild1() != null) {
+            treePrinter(node.getChild1(), givenDepth + 1);
+        }
+
+        if (node.getChild2() != null) {
+            treePrinter(node.getChild2(), givenDepth + 1);
+        }
 
 
     }

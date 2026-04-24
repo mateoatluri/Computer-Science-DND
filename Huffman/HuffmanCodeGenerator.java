@@ -19,6 +19,39 @@ public class HuffmanCodeGenerator {
         getFrequencies(frequencyFile);
         root = createTree();
     }
+    
+
+    /**
+     * @return the frequencies
+     */
+    public HashMap<Character, Integer> getFrequencies() {
+        return frequencies;
+    }
+
+
+    /**
+     * @param frequencies the frequencies to set
+     */
+    public void setFrequencies(HashMap<Character, Integer> frequencies) {
+        this.frequencies = frequencies;
+    }
+
+
+    /**
+     * @return the root
+     */
+    public FrequencyNode getRoot() {
+        return root;
+    }
+
+
+    /**
+     * @param root the root to set
+     */
+    public void setRoot(FrequencyNode root) {
+        this.root = root;
+    }
+
 
     public void getFrequencies(String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
