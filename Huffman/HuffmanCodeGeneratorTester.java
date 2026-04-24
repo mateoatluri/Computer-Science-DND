@@ -5,6 +5,10 @@ public class HuffmanCodeGeneratorTester {
 
         //System.out.println(HuffmanCodeGenerator("ABCDEFG.txt"));
 
-        System.out.println(newThing.getFrequency('A'));
+        //System.out.println(newThing.getFrequency('A'));
+
+        
+
+
     }
 }

@@ -12,10 +12,12 @@ public class HuffmanCodeGenerator {
 
 
     private HashMap<Character, Integer> frequencies;
+    private FrequencyNode root;
 
     public HuffmanCodeGenerator(String frequencyFile) {
         frequencies = new HashMap<Character, Integer>();
         getFrequencies(frequencyFile);
+        root = createTree();
     }
 
     public void getFrequencies(String filePath) {
@@ -56,7 +58,7 @@ public class HuffmanCodeGenerator {
         return frequencies.get(c);
     }
 
-    public void createTree() {
+    public FrequencyNode createTree() {
 
         ArrayList<FrequencyNode> sortedArray = frequencySort(frequencies);
 
@@ -80,7 +82,11 @@ public class HuffmanCodeGenerator {
 
         }
 
+
+
         //add the root node next
+
+        return sortedArray.get(0);
 
     }
 
