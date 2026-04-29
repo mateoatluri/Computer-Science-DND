@@ -9,7 +9,12 @@ import java.util.Map;
 public class HuffmanCodeGeneratorTester {
     
     public static void main(String[] args) {
-        HuffmanCodeGenerator newThing = new HuffmanCodeGenerator("ABCDEFG.txt");
+        HuffmanCodeGenerator newThing = new HuffmanCodeGenerator("frequencyCountInput.txt");
+
+        HuffmanEncoder newEncoder = new HuffmanEncoder("frequencyCountInput.txt.key");
+        newEncoder.encodeFileToHuffmanCodes("frequencyCountInput.txt", "frequencyEncoded.txt");
+
+        //newThing.makeCodeFile("frequencyCountInput.txt");
 
         //System.out.println(HuffmanCodeGenerator("ABCDEFG.txt"));
 
@@ -17,7 +22,9 @@ public class HuffmanCodeGeneratorTester {
 
         //System.out.println(HuffmanCodeGeneratorTester.treePrinter(newThing.getRoot()));
 
-        HuffmanCodeGeneratorTester.treePrinter(newThing.getRoot(), 0);
+        //HuffmanCodeGeneratorTester.treePrinter(newThing.getRoot(), 0);
+
+        //System.out.println(newThing.getBinaryDictionary());
 
         //System.out.println(newThing.getCode('G'));
 

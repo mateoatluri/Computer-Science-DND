@@ -13,14 +13,15 @@ public class HuffmanCodeGenerator {
 
 
     private HashMap<Character, Integer> frequencies;
+    private HashMap<Character, String> binaryDictionary;
     private FrequencyNode root;
 
     public HuffmanCodeGenerator(String frequencyFile) {
         frequencies = new HashMap<Character, Integer>();
+        binaryDictionary = new HashMap<Character, String>();
         getFrequencies(frequencyFile);
         root = createTree();
         assignBinary(root);
-        makeCodeFile(frequencyFile);
     }
     
 
@@ -147,6 +148,10 @@ public class HuffmanCodeGenerator {
 
         String currentNode = node.getBinary();
 
+        if (node.getChild1() == null && node.getChild2() == null) {
+            binaryDictionary.put(node.getValue(), currentNode);
+        }
+
         if (node.getChild1() != null) {
             node.getChild1().setBinary(currentNode + "0");
             assignBinary(node.getChild1());
@@ -161,11 +166,10 @@ public class HuffmanCodeGenerator {
 
     public String getCode(char c) {
         
-        FrequencyNode node = getNodeWithValue(root, c);
-        if (node != null) {
-            return node.getBinary();
-        } else {
+        if (binaryDictionary.get(c) == null) {
             return "";
+        } else {
+            return binaryDictionary.get(c);
         }
     }
 
@@ -199,36 +203,73 @@ public class HuffmanCodeGenerator {
     public void makeCodeFile(String codeFile) {
 
         try {
+            //BufferedReader br = new BufferedReader(new FileReader(codeFile));
+            PrintWriter pw = new PrintWriter(codeFile + ".key");
 
-            BufferedReader br = new BufferedReader(new FileReader(codeFile));
-            PrintWriter pw = new PrintWriter(codeFile + ".huff");
-    
-            StringBuilder toReturn = new StringBuilder();
-    
-            char currentChar = (char) br.read();
-            //int count = 1;
-    
-            while (br.ready()) {
-                currentChar = (char) br.read();
-                String toAdd = getCode(currentChar);
-                
-                toReturn.append(toAdd);
-    
+            for (int i = 0; i < 128; i++) {
+                pw.write(getCode((char) i));
+                pw.write("\n");
             }
-    
-            br.close();
-    
-            pw.write(toReturn.toString());
-    
+
             pw.close();
-        } catch (Exception e) {
-            System.out.println("Uh oh.");
+
+
+        } catch (Exception E) {
+            System.out.println("This failed!");
         }
+
+    }
+
+
+    /**
+     * @return the binaryDictionary
+     */
+    public HashMap<Character, String> getBinaryDictionary() {
+        return binaryDictionary;
+    }
+
+
+    /**
+     * @param binaryDictionary the binaryDictionary to set
+     */
+    public void setBinaryDictionary(HashMap<Character, String> binaryDictionary) {
+        this.binaryDictionary = binaryDictionary;
+    }
+
+    // this method is more like what EncodeFile (day 6) should end up being
+    // public void makeCodeFile(String codeFile) {
+
+    //     try {
+
+    //         BufferedReader br = new BufferedReader(new FileReader(codeFile));
+    //         PrintWriter pw = new PrintWriter(codeFile + ".huff");
+    
+    //         StringBuilder toReturn = new StringBuilder();
+    
+    //         char currentChar = (char) br.read();
+    //         //int count = 1;
+    
+    //         while (br.ready()) {
+    //             currentChar = (char) br.read();
+    //             String toAdd = getCode(currentChar);
+                
+    //             toReturn.append(toAdd);
+    
+    //         }
+    
+    //         br.close();
+    
+    //         pw.write(toReturn.toString());
+    
+    //         pw.close();
+    //     } catch (Exception e) {
+    //         System.out.println("Uh oh.");
+    //     }
 
 
 
         
 
-    }
+    // }
 
 }
