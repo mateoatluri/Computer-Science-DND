@@ -29,7 +29,7 @@ public class HuffmanEncoder {
             while (br.ready()) {
                 currentChar = (char) br.read();
                 
-
+                
                 if (currentChar == (char) '\n') {
                     if (!binaryFreq.equals("")) {
                         dictionary.put(currentChar, count);
