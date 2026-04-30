@@ -9,10 +9,24 @@ import java.util.Map;
 public class HuffmanCodeGeneratorTester {
     
     public static void main(String[] args) {
-        HuffmanCodeGenerator newThing = new HuffmanCodeGenerator("frequencyCountInput.txt");
+        
+        try {
 
-        HuffmanEncoder newEncoder = new HuffmanEncoder("frequencyCountInput.txt.key");
-        newEncoder.encodeFileToHuffmanCodes("frequencyCountInput.txt", "frequencyEncoded.txt");
+            HuffmanCodeGenerator newThing = new HuffmanCodeGenerator("frequencyCountInput.txt");
+
+            HuffmanEncoder newEncoder = new HuffmanEncoder("frequencyCountInput.txt.key");
+            newEncoder.encodeFile("frequencyCountInput.txt");
+            //newEncoder.encodeFileToHuffmanCodes("frequencyCountInput.txt", "frequencyEncoded.txt");
+
+            HuffmanDecoder newDecoder = new HuffmanDecoder("frequencyCountInput.txt.key");
+            newDecoder.decodeFileFromHuffmanCodes("frequencyEncoded.txt", "frequencyDecoded.txt");
+
+        } catch (Exception E) {
+            System.out.println("hi");
+        }
+        
+        
+        
 
         //newThing.makeCodeFile("frequencyCountInput.txt");
 
