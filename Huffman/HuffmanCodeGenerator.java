@@ -204,7 +204,7 @@ public class HuffmanCodeGenerator {
 
         try {
             //BufferedReader br = new BufferedReader(new FileReader(codeFile));
-            PrintWriter pw = new PrintWriter(codeFile + ".key");
+            PrintWriter pw = new PrintWriter("studentCodeFile.txt");
 
             for (int i = 0; i < 128; i++) {
                 pw.write(getCode((char) i));

@@ -13,13 +13,15 @@ public class HuffmanCodeGeneratorTester {
         try {
 
             HuffmanCodeGenerator newThing = new HuffmanCodeGenerator("frequencyCountInput.txt");
+            newThing.makeCodeFile("studentCodeFile.txt");
 
-            HuffmanEncoder newEncoder = new HuffmanEncoder("frequencyCountInput.txt.key");
+            HuffmanEncoder newEncoder = new HuffmanEncoder("studentCodeFile.txt");
             newEncoder.encodeFile("frequencyCountInput.txt");
-            //newEncoder.encodeFileToHuffmanCodes("frequencyCountInput.txt", "frequencyEncoded.txt");
+            
 
-            HuffmanDecoder newDecoder = new HuffmanDecoder("frequencyCountInput.txt.key");
-            newDecoder.decodeFileFromHuffmanCodes("frequencyEncoded.txt", "frequencyDecoded.txt");
+            HuffmanDecoder newDecoder = new HuffmanDecoder("studentCodeFile.txt");
+            newDecoder.decodeFile("frequencyCountInput.txt.huf");
+            
 
         } catch (Exception E) {
             System.out.println("hi");

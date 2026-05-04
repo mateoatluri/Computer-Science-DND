@@ -28,7 +28,7 @@ public class HuffmanDecoder {
                 
                 if (currentChar == (char) '\n') {
                     if (!binary.equals("")) {
-                        decodedDictionary.put(binary, (char) count);
+                        decodedDictionary.put(binary.trim(), (char) count);
 
                         binary = "";
                     }
@@ -126,6 +126,7 @@ public class HuffmanDecoder {
 
     }
 
+
     public void decodeFile(String encodedFile) {
 
         // do this next class
@@ -139,41 +140,39 @@ public class HuffmanDecoder {
             BufferedReader br = new BufferedReader(new FileReader(encodedFile));
             PrintWriter pw = new PrintWriter(encodedFile.substring(0, encodedFile.length() - 4));
 
+            //PrintWriter pw = new PrintWriter("finalDecoded.txt");
+
             char currentChar;
-            String currentBinary = "";
-            //boolean isBroken;
+
+            StringBuilder current = new StringBuilder();
+
 
             while (br.ready()) {
 
                 currentChar = (char) br.read();
                 int charAsInt = (int) currentChar;
-                
-                //currentBinary += currentChar;
 
                 String binary = Integer.toBinaryString(charAsInt);
 
-                if (charAsInt == (char) 26) {
-                    break;
+                while (binary.length() < 8) {
+                    binary = "0" + binary;
                 }
 
-                pw.write(binary);
+                for (int i = 0; i < binary.length(); i++) {
+                    current.append(binary.charAt(i));
 
-                // if (isCode(currentBinary)) {
+                    if (isCode(current.toString())) {
+                        char decodedChar = decodeChar(current.toString());
+                        if (decodedChar == (char) 26) {
+                            pw.close();
+                            br.close();
+                            return;
+                        }
 
-                    
-
-                //     if (decodeChar(currentBinary) == (char) 26) {
-                //         break;
-                //     }
-
-                //     pw.write(decodeChar(currentBinary));
-
-                //     currentBinary = "";
-
-                // }
-
-                //pw.write(binaryCode);
-                
+                        pw.write(decodedChar);
+                        current = new StringBuilder();
+                    }
+                }            
 
             }
 

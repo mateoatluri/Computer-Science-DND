@@ -31,7 +31,7 @@ public class HuffmanEncoder {
                 
                 if (currentChar == (char) '\n') {
                     if (!binary.equals("")) {
-                        dictionary.put((char) count, binary);
+                        dictionary.put((char) count, binary.trim());
 
                         binary = "";
                     }
