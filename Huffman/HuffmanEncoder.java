@@ -41,6 +41,10 @@ public class HuffmanEncoder {
                 }
     
             }
+
+            if (!binary.equals("")) {
+                dictionary.put((char) count, binary.trim());
+            }
     
             br.close();
     
@@ -116,17 +120,17 @@ public class HuffmanEncoder {
                 currentChar = (char) br.read();
 
                 String binaryCode = encodeChar(currentChar);
-
+                totalCharacters += binaryCode.length();
                 binaryChar += binaryCode;
 
-                if (binaryChar.length() >= 8) {
+                while (binaryChar.length() >= 8) {
                     String toAdd = binaryChar.substring(0, 8);
                     pw.write((char) Integer.parseInt(toAdd, 2));
 
                     binaryChar = binaryChar.substring(8);
                 }
 
-                totalCharacters += binaryCode.length();
+                
 
             }
 
@@ -145,7 +149,7 @@ public class HuffmanEncoder {
                 binaryChar += "0";
             }
 
-            for (int i = 0; i < binaryChar.length() / 8; i++) {
+            while (binaryChar.length() >= 8) {
                 String toAdd = binaryChar.substring(0, 8);
                 pw.write((char) Integer.parseInt(toAdd, 2));
 
