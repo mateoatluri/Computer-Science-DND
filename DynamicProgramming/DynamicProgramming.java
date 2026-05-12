@@ -1,6 +1,7 @@
+import java.util.HashMap;
+
 
 public class DynamicProgramming {
-
 
 	
     // Every day for the rest of the year, you're going to be given a choice between two jobs to do: 
@@ -13,6 +14,33 @@ public class DynamicProgramming {
     
     // You can assume lowPayouts.length == highPayouts.length
     public static int hiLoStress(int[] lowPayouts, int[] highPayouts) {
+
+        HashMap<Integer, Integer> expectedPayout = new HashMap<Integer, Integer>();
+
+        return hiLoStressHelper(lowPayouts, highPayouts, expectedPayout, 0);
+
+    }
+
+    public static int hiLoStressHelper(int[] lowPayouts, int[] highPayouts, HashMap<Integer, Integer> expectedPayout, int day) {
+
+        if (day >= lowPayouts.length) { 
+            return 0;
+        }
+
+        if (expectedPayout.get(day) != null) {
+            return expectedPayout.get(day);
+        }
+        
+        int highPayout = highPayouts[day] + hiLoStressHelper(lowPayouts, highPayouts, expectedPayout, day + 2);
+        int lowPayout = lowPayouts[day] + hiLoStressHelper(lowPayouts, highPayouts, expectedPayout, day + 1);
+
+        int maxPayout = highPayout;
+        if (lowPayout > highPayout) {
+            maxPayout = lowPayout;
+        }
+
+        expectedPayout.put(day, maxPayout);
+        return maxPayout;
 
     }
     
@@ -32,6 +60,9 @@ public class DynamicProgramming {
     // Write a method that returns the maximum POINTS you can get.
     public static int scavHunt(int[] times, int[] points) {
 	
+        
+
+
 	}
     
 
