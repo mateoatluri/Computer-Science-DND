@@ -43,7 +43,7 @@ public class DynamicProgramming {
         return maxPayout;
 
     }
-    
+
     
 	// You are partaking in a scavenger hunt!
     // You've gotten a secret map to find many of the more difficult
@@ -60,10 +60,57 @@ public class DynamicProgramming {
     // Write a method that returns the maximum POINTS you can get.
     public static int scavHunt(int[] times, int[] points) {
 	
-        
+        HashMap<Integer, Integer> expectedMoney = new HashMap<Integer, Integer>();
 
+        return scavHelper(times, points, expectedMoney, 0);
 
 	}
+
+    public static int scavHelper(int[] times, int[] points, HashMap<Integer, Integer> expectedMoney, int index) {
+
+        if (index == times.length - 1) {
+            return points[index];
+        }
+
+        if (index >= times.length) {
+            return 0;
+        }
+
+        if (expectedMoney.get(index) != null) {
+            return expectedMoney.get(index);
+        }
+
+        int nextIndex = getFiveTimeIndex(index, times);
+
+        int take = 0;
+        
+
+        if (nextIndex != -1) {
+            take = points[index] + scavHelper(times, points, expectedMoney, nextIndex);
+        }
+
+        //int take = points[index] + scavHelper(times, points, expectedMoney, nextIndex);
+        int notTake = scavHelper(times, points, expectedMoney, index + 1);
+
+        int maxMoney = notTake;
+        if (take > notTake) {
+            maxMoney = take;
+        }
+
+        expectedMoney.put(index, maxMoney);
+        return maxMoney;
+
+    }
+
+    public static int getFiveTimeIndex(int currentIndex, int[] times) {
+        for (int i = currentIndex; i < times.length; i++) {
+            if (times[i] >= times[currentIndex] + 5) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
     
 
 
@@ -71,9 +118,60 @@ public class DynamicProgramming {
 	 * starting at [0][0], only going right or down at each point */
 	public static int dynamicCookies(int[][] cookieGrid) {
 
-	}
-    
-    
+        int[][] solutionGrid = new int[cookieGrid.length][cookieGrid[0].length];
 
+        return recursiveOptimalPath(0, 0, cookieGrid, solutionGrid);
+
+	}
+
+    private static boolean goodPoint(int row, int col, int[][] cookieGrid) {
+        int numRows = cookieGrid.length;
+        int numCols = cookieGrid[0].length;
+
+        return (row >= 0 && row < numRows && 
+        col >= 0 && col < numCols && 
+        cookieGrid[row][col] >= 0);
+   
+        }
+
+        /* RECURSIVELY calculates the route which grants the most cookies.
+
+        * Returns the maximum number of cookies attainable. */
+
+
+        /* Helper function for the above, which returns the maximum number of cookies 
+       
+       
+        * edible starting at coordinate (row, col). */
+       
+       
+        /* From any given position, always check right before checking down */
+   
+        private static int recursiveOptimalPath(int row, int col, int[][] cookieGrid, int[][] solutionGrid) {
+        
+       
+        if (!goodPoint(row, col, cookieGrid)) {
+            return 0;
+        }
+
+        if (solutionGrid[row][col] != 0) {
+            return solutionGrid[row][col];
+        }
+   
+        int down = recursiveOptimalPath(row+1, col, cookieGrid, solutionGrid);
+        int right = recursiveOptimalPath(row, col+1, cookieGrid, solutionGrid);
+
+        if (goodPoint(row + 1, col, cookieGrid)) {
+            solutionGrid[row+1][col] = down;
+        }
+
+        if (goodPoint(row, col + 1, cookieGrid)) {
+            solutionGrid[row][col+1] = right;
+        }
+        
+ 
+        return cookieGrid[row][col] + Math.max(right, down);
+
+        } 
 
 }
