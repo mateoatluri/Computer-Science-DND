@@ -5,10 +5,10 @@ public class DynamicProgrammingTester {
         
 
 
-        int[] lowPayouts = {1, 2, 3};
-        int[] highPayouts = {4, 5, 6};
+        // int[] lowPayouts = {1, 2, 3};
+        // int[] highPayouts = {4, 5, 6};
 
-        System.out.println(DynamicProgramming.hiLoStress(lowPayouts, highPayouts));
+        // System.out.println(DynamicProgramming.hiLoStress(lowPayouts, highPayouts));
 
 
         // int[] times = {3, 5, 6, 7, 10};
@@ -16,13 +16,13 @@ public class DynamicProgrammingTester {
 
         // System.out.println(DynamicProgramming.scavHunt(times, prize));
 
-        // int[][] matrix = {
-        //     {4, 5, 8, 0},
-        //     {3, 2, 1, 0},
-        //     {4, 3, 4, 9}
-        // };
+        int[][] matrix = {
+            {4, 5, 8, 0},
+            {3, 2, 1, 0},
+            {4, 3, 4, 9}
+        };
 
-        // System.out.println(DynamicProgramming.dynamicCookies(matrix));
+        System.out.println(DynamicProgramming.dynamicCookies(matrix));
 
     }
 }
